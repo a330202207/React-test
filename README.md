@@ -2,6 +2,8 @@
 
 ###  树状图
 ```shell
+ |----public
+ |      `----logs                       # 公共css
  |----src
  |      |----api                        # ajax相关
  |      |----assets                     # 公共资源
@@ -10,5 +12,5 @@
  |      |----pages                      # 路由组件
  |      |----utils                      # 工具慕课
  |      |----App.js                     # 应用根组件
- |      |----index.js                   # 入口js
+ |      `----index.js                   # 入口js
 ```

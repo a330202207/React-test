@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Card, Icon, message, Table, Modal} from 'antd';
 import LinkButton from "../../components/link-button";
-import {getCategoryList, addCategory, updateCategory} from "../../api";
+import {getCategoryList, addCategory, updateCategory, delCategory} from "../../api";
 import AddForm from "./add-form";
 import UpdateForm from "./update-form";
 
@@ -32,16 +32,23 @@ export default class Category extends Component {
             {
                 title: '分类名称',
                 dataIndex: 'name',
+                key: 'name',
+            },
+            {
+                title: '排序',
+                dataIndex: 'order_by',
+                key: 'order_by',
             },
             {
                 title: '操作',
                 width: 300,
                 render: (category) => (
                     <span>
-                        <LinkButton onClick={() => this.showUpdate(category)}>修改分类</LinkButton>
+                        <LinkButton onClick={() => this.showUpdate(category)}>修改</LinkButton>
                         {this.state.parentId === 0 ? <LinkButton onClick={() => {
                             this.showSubCategoryList(category)
-                        }}>查看子分类</LinkButton> : null}
+                        }}>查看</LinkButton> : null}
+                        <LinkButton onClick={() => this.delCategory(category.id)}>删除</LinkButton>
                     </span>
                 )
             },
@@ -101,7 +108,6 @@ export default class Category extends Component {
      * 取消弹出框
      */
     handleCancel = () => {
-
         //清除输入数据
         this.form.resetFields();
 
@@ -116,7 +122,6 @@ export default class Category extends Component {
 
     //显示修改确认框
     showUpdate = (category) => {
-
         this.category = category;
 
         this.setState({showStatus: 2});
@@ -124,26 +129,64 @@ export default class Category extends Component {
 
     //添加分类
     addCategory = () => {
+        this.form.validateFields(async (err, val) => {
+            if (!err) {
+                //隐藏确认框
+                this.setState({showStatus: 0});
+                const {name, parent_id, order_by} = val;
+                //清除输入数据
+                this.form.resetFields();
+                //更新分类
+                const res = await addCategory({name, parent_id, order_by});
+                if (res.code === 200) {
+                    //重新显示列表
+                    this.getCategoryList();
+                } else {
+                    message.error(res.msg)
+                }
+            }
+        });
+
 
     };
 
     //修改分类
-    updateCategory = async () => {
+    updateCategory = () => {
+        this.form.validateFields(async (err, val) => {
+            if (!err) {
+                console.log(val);
 
-        //隐藏确认框
-        this.setState({showStatus: 0});
+                //隐藏确认框
+                this.setState({showStatus: 0});
 
-        const categoryId = this.category.id;
-        const categoryName = this.state.from.getFieldValue('categoryName');
+                const id = this.category.id;
+                const {name, parent_id, order_by} = val;
 
-        //清除输入数据
-        this.form.resetFields();
+                //清除输入数据
+                this.form.resetFields();
 
-        //更新分类
-        const res = await updateCategory({categoryId, categoryName});
-        if (res.status === 0) {
+                //更新分类
+                const res = await updateCategory({id, name, parent_id, order_by});
+                if (res.code === 200) {
+                    //重新显示列表
+                    this.getCategoryList();
+                } else {
+                    message.error(res.msg);
+                }
+            }
+        });
+
+    };
+
+    //删除分类
+    delCategory = async (id) => {
+        const res = await delCategory(id);
+        if (res.code === 200) {
+            message.success("删除成功!");
             //重新显示列表
             this.getCategoryList();
+        } else {
+            message.error(res.msg)
         }
     };
 
@@ -156,11 +199,7 @@ export default class Category extends Component {
     }
 
     render() {
-
-
         const category = this.category || {};
-        console.log(category.name);
-
         //Card左侧
         const title = this.state.parentId === 0 ? '一级分类列表' : (
             <span>
@@ -196,7 +235,13 @@ export default class Category extends Component {
                     onOk={this.addCategory}
                     onCancel={this.handleCancel}
                 >
-                    <AddForm/>
+                    <AddForm
+                        categoryList={this.state.categoryList}
+                        parentId={this.state.parentId}
+                        setForm={(form) => {
+                            this.form = form
+                        }}
+                    />
                 </Modal>
 
                 <Modal
@@ -206,10 +251,12 @@ export default class Category extends Component {
                     onCancel={this.handleCancel}
                 >
                     <UpdateForm
-                        categoryName={category.name}
+                        categoryList={this.state.categoryList}
+                        categoryInfo={category}
                         setForm={(form) => {
                             this.form = form
-                        }}/>
+                        }}
+                    />
                 </Modal>
 
             </Card>
