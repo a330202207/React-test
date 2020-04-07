@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Button, Card, Icon, message, Table, Modal} from 'antd';
 import LinkButton from "../../components/link-button";
 import {getCategoryList, addCategory, updateCategory, delCategory} from "../../api";
+import {PAGE_SIZE} from '../../utils/constants'
 import AddForm from "./add-form";
 import UpdateForm from "./update-form";
 
@@ -14,6 +15,7 @@ export default class Category extends Component {
         super(props);
         this.state = {
             parentId: 0,
+            total: 0,
             parentName: '',
             categoryList: [],
             subCategoryList: [],
@@ -59,20 +61,30 @@ export default class Category extends Component {
      *  异步获取分类列表
      * @returns {Promise<void>}
      */
-    getCategoryList = async () => {
+    getCategoryList = async (page = 1) => {
+        this.page = page;
+
         //loading
         this.setState({loading: true});
 
         const parentId = this.state.parentId;
-        const res = await getCategoryList(parentId);
+
+        const res = await getCategoryList(parentId, page, PAGE_SIZE);
 
         this.setState({loading: false});
         if (res.code === 200) {
-            const categoryList = res.data.list;
+            const {list,total} = res.data;
+
             if (parentId === 0) {
-                this.setState({categoryList})
+                this.setState({
+                    total,
+                    categoryList:list
+                });
             } else {
-                this.setState({subCategoryList: categoryList})
+                this.setState({
+                    total,
+                    subCategoryList: list
+                });
             }
         } else {
             message.error("获取分类列表失败");
@@ -195,11 +207,14 @@ export default class Category extends Component {
      * 执行异步
      */
     componentDidMount() {
-        this.getCategoryList();
+        this.getCategoryList(1);
     }
 
     render() {
         const category = this.category || {};
+        const total = this.state.total;
+
+
         //Card左侧
         const title = this.state.parentId === 0 ? '一级分类列表' : (
             <span>
@@ -216,7 +231,6 @@ export default class Category extends Component {
             <Button type='primary' onClick={this.showAdd}>
                 <Icon type="plus"/> 添加
             </Button>
-
         );
         return (
             <Card title={title} extra={extra}>
@@ -226,7 +240,13 @@ export default class Category extends Component {
                     loading={this.state.loading}
                     dataSource={this.state.parentId === 0 ? this.state.categoryList : this.state.subCategoryList}
                     columns={this.state.columns}
-                    pagination={{defaultPageSize: 2, showQuickJumper: true}}
+                    pagination={{
+                        current:this.page,
+                        total,
+                        defaultPageSize: PAGE_SIZE,
+                        showQuickJumper: true,
+                        onChange: this.getCategoryList
+                    }}
                 />
 
                 <Modal

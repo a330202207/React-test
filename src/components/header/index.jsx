@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom"
 import menuList from "../../config/menuConfig";
 import "./index.less";
-import {formatDate} from "../../utils/dateUtils";
+import dateUtils from "../../utils/dateUtils";
 import memoryUtils from "../../utils/memoryUtils";
 import {Modal} from 'antd';
 import storageUtils from "../../utils/storageUtils";
@@ -15,7 +15,7 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTime: formatDate(Date.now()),
+            currentTime: dateUtils.formatDate(Date.now()),
             weather: '晴',
             username: 'admin',
             // username:memoryUtils.user.username,
@@ -25,7 +25,7 @@ class Header extends Component {
     getTime = () => {
         //每隔1秒获取当前时间并更新
         setInterval(() => {
-            const currentTime = formatDate(Date.now());
+            const currentTime = dateUtils.formatDate(Date.now());
             this.setState({currentTime});
         });
     };
@@ -75,7 +75,7 @@ class Header extends Component {
     };
 
     state = {
-        currentTime: formatDate(Date.now()),        //当前时间
+        currentTime: dateUtils.formatDate(Date.now()),        //当前时间
         weather: '晴',     //天气文本
     };
 
