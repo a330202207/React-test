@@ -20,6 +20,9 @@ export const getCategoryList = (parent_id, page, page_size) => ajax(BASE + '/adm
     page_size
 });
 
+//获取分类
+export const getCategory = (id) => ajax(BASE + '/admin/category/edit', {id});
+
 //添加分类
 export const addCategory = ({name, parent_id, order_by}) => ajax(BASE + '/admin/category/add', {
     name,
@@ -48,6 +51,9 @@ export const getProductList = (page, page_size, name, status, startTime, endTime
     endTime
 });
 
+//获取商品列表
+export const getProduct = (id) => ajax(BASE + '/admin/product/edit', {id});
+
 //添加商品
 export const addProduct = ({name, parent_id, order_by}) => ajax(BASE + '/admin/category/add', {
     name,
@@ -56,10 +62,10 @@ export const addProduct = ({name, parent_id, order_by}) => ajax(BASE + '/admin/c
 }, 'POST');
 
 //删除商品
-export const delProduct = (id) => ajax(BASE + '/admin/category/del', {id}, 'POST');
+export const delProduct = (id) => ajax(BASE + '/admin/product/del', {id}, 'POST');
 
 //修改商品
-export const updateProduct = ({id, name, parent_id, order_by}) => ajax(BASE + '/admin/category/save', {
+export const updateProduct = ({id, name, parent_id, order_by}) => ajax(BASE + '/admin/product/save', {
     id,
     name,
     parent_id,
