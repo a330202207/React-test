@@ -10,7 +10,7 @@
  |      |----components                 # 非路由组建
  |      |----config                     # 配置
  |      |----pages                      # 路由组件
- |      |----utils                      # 工具慕课
+ |      |----utils                      # 工具
  |      |----App.js                     # 应用根组件
  |      `----index.js                   # 入口js
 ```

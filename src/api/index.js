@@ -20,8 +20,11 @@ export const getCategoryList = (parent_id, page, page_size) => ajax(BASE + '/adm
     page_size
 });
 
+//获取多个分类
+export const getCategories = (parent_id) => ajax(BASE + '/admin/get/categories', {parent_id,});
+
 //获取分类
-export const getCategory = (id) => ajax(BASE + '/admin/category/edit', {id});
+export const getCategory = (id) => ajax(BASE + '/admin/get/category', {id});
 
 //添加分类
 export const addCategory = ({name, parent_id, order_by}) => ajax(BASE + '/admin/category/add', {
@@ -71,6 +74,9 @@ export const updateProduct = ({id, name, parent_id, order_by}) => ajax(BASE + '/
     parent_id,
     order_by
 }, 'POST');
+
+//删除图片
+export const delImg = (path) => ajax(BASE + '/admin/del/img', {path}, 'POST');
 
 /*
 json 请求函数

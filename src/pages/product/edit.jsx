@@ -36,7 +36,7 @@ export class ProductEdit extends Component {
         return (
             <Card title={title} className='product-detail'>
                 <Form {...formItemLayout}>
-                    <Item title="商品名称">
+                    <Item label="商品名称">
                         {
                             getFieldDecorator('name', {
                                 initialValue: name,
