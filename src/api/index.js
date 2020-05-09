@@ -14,7 +14,7 @@ export const addUser = (user) => ajax(BASE + '/manage/user/add', user, 'POST');
 //获取天气
 
 //获取分类列表
-export const getCategoryList = (parent_id, page, page_size) => ajax(BASE + '/admin/category/list', {
+export const getCategoryList = (parent_id, page, page_size) => ajax(BASE + '/admin/get/categoryList', {
     parent_id,
     page,
     page_size
@@ -27,17 +27,17 @@ export const getCategories = (parent_id) => ajax(BASE + '/admin/get/categories',
 export const getCategory = (id) => ajax(BASE + '/admin/get/category', {id});
 
 //添加分类
-export const addCategory = ({name, parent_id, order_by}) => ajax(BASE + '/admin/category/add', {
+export const addCategory = ({name, parent_id, order_by}) => ajax(BASE + '/admin/add/category', {
     name,
     parent_id,
     order_by,
 }, 'POST');
 
 //删除分类
-export const delCategory = (id) => ajax(BASE + '/admin/category/del', {id}, 'POST');
+export const delCategory = (id) => ajax(BASE + '/admin/del/category', {id}, 'POST');
 
 //更新分类
-export const updateCategory = ({id, name, parent_id, order_by}) => ajax(BASE + '/admin/category/save', {
+export const updateCategory = ({id, name, parent_id, order_by}) => ajax(BASE + '/admin/save/category/', {
     id,
     name,
     parent_id,
@@ -45,7 +45,7 @@ export const updateCategory = ({id, name, parent_id, order_by}) => ajax(BASE + '
 }, 'POST');
 
 //获取商品列表
-export const getProductList = (page, page_size, name, status, startTime, endTime) => ajax(BASE + '/admin/product/list', {
+export const getProductList = (page, page_size, name, status, startTime, endTime) => ajax(BASE + '/admin/get/productList', {
     page,
     page_size,
     name,
@@ -55,28 +55,39 @@ export const getProductList = (page, page_size, name, status, startTime, endTime
 });
 
 //获取商品列表
-export const getProduct = (id) => ajax(BASE + '/admin/product/edit', {id});
+export const getProduct = (id) => ajax(BASE + '/admin/get/product', {id});
 
 //添加商品
-export const addProduct = ({name, parent_id, order_by}) => ajax(BASE + '/admin/category/add', {
+export const addProduct = ({name, category_id, price, order_by, details, num, imgs}) => ajax(BASE + '/admin/add/product', {
     name,
-    parent_id,
-    order_by,
-}, 'POST');
-
-//删除商品
-export const delProduct = (id) => ajax(BASE + '/admin/product/del', {id}, 'POST');
-
-//修改商品
-export const updateProduct = ({id, name, parent_id, order_by}) => ajax(BASE + '/admin/product/save', {
-    id,
-    name,
-    parent_id,
+    category_id,
+    price,
+    details,
+    num,
+    imgs,
     order_by
 }, 'POST');
 
+//删除商品
+export const delProduct = (id) => ajax(BASE + '/admin/del/product', {id}, 'POST');
+
+//修改商品
+export const updateProduct = ({id, name, category_id, price, order_by, details, num, imgs}) => ajax(BASE + '/admin/save/product', {
+    id,
+    name,
+    category_id,
+    price,
+    details,
+    num,
+    imgs,
+    order_by
+}, 'POST');
+
+//商品上下架
+export const updateStatus = ({id, status}) => ajax(BASE + '/admin/updateStatus/product', {id,status}, 'POST');
+
 //删除图片
-export const delImg = (path) => ajax(BASE + '/admin/del/img', {path}, 'POST');
+export const delImg = (urls) => ajax(BASE + '/admin/del/img', {urls}, 'POST');
 
 /*
 json 请求函数

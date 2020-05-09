@@ -1,22 +1,43 @@
 import React, {Component} from "react";
+import PropTypes from 'prop-types';
 import {Upload, Modal, message} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
-import {delImg} from '../../api'
 
 
+//上传文件组件
 export default class PicturesWall extends Component {
+    static propTypes = {
+        imgs: PropTypes.array
+    };
     constructor(props) {
         super(props);
         this.state = {
             previewVisible: false,  // 标识是否显示大图预览Modal
             previewImage: '',       // 大图的url
-            fileList: [],           // 所有已上传图片的数组
+            fileList: this.initImgList(props.imgs),           // 所有已上传图片的数组
         }
-    }
+    };
+
+    //初始化图片列表
+    initImgList = (list) => {
+        let fileList = [];
+        if (list && list.length > 0) {
+            fileList = list.map((img, index) => ({
+                uid: index,
+                url: img.img,
+            }));
+        }
+        return fileList;
+    };
+
+    getImgs = () => {
+        return this.state.fileList.map(file => file.url);
+    };
 
     handleCancel = () => this.setState({previewVisible: false});
 
     handlePreview = (file) => {
+        //显示指定file对应的大图
         this.setState({
             previewImage: file.url || file.thumbUrl,
             previewVisible: true,
@@ -35,31 +56,26 @@ export default class PicturesWall extends Component {
                 file.url = imgUrl;
                 file.path = imgPath;
             } else {
-                message.error('上传图片失败')
-            }
-        }
-
-        if (file.status === 'removed') {
-            const res = await delImg(file.path);
-            if (res.code === 200) {
-                message.success('删除图片成功!')
-            } else {
-                message.error('删除图片失败!')
+                file = fileList[fileList.length - 1];
+                file.status = 'error';
+                message.error(res.msg)
             }
         }
         // 在操作(上传/删除)过程中更新fileList状态
         this.setState({fileList})
     };
 
+    //删除文件
     onRemove = (file) => {
-        if (file.response.code === 200) {
-            const index = this.state.fileList.indexOf(file);
-            const newFileList = this.state.fileList.slice();
-            newFileList.splice(index, 1);
-            this.setState({
-                fileList: newFileList
-            })
-        }
+        console.log(file);
+        this.props.handleImg(file.url);
+        const index = this.state.fileList.indexOf(file);
+        const newFileList = this.state.fileList.slice();
+        newFileList.splice(index, 1);
+        console.log(newFileList);
+        this.setState({
+            fileList: newFileList
+        })
     };
 
     render() {

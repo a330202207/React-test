@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import {Input, Card, Icon, Form, List, Switch} from 'antd'
+import {Input, Card, Icon, Form, Switch} from 'antd'
 import LinkButton from '../../components/link-button';
-import {BASE_IMG_URL} from '../../utils/constants'
 
 const Item = Form.Item;
 
@@ -9,7 +8,7 @@ const Item = Form.Item;
 export class ProductEdit extends Component {
     render() {
 
-        const {name, price, num, imgs, order_by, status, details, category_info} = this.props.location.state.product;
+        const {name, price, num, imgs, order_by, details, category_info} = this.props.location.state.product;
 
         // 指定Item布局的配置对象
         const formItemLayout = {
@@ -96,7 +95,7 @@ export class ProductEdit extends Component {
                     </Item>
 
                     <Item label="商品状态">
-                        <Switch checkedChildren="上架" unCheckedChildren="下架" defaultChecked={status === 1}/>
+                        <Switch checkedChildren="上架" unCheckedChildren="下架" />
                     </Item>
                     <Item>
                         <span className="left">商品图片:</span>
@@ -105,7 +104,7 @@ export class ProductEdit extends Component {
                                 imgs.map(img => (
                                     <img
                                         key={img.id}
-                                        src={BASE_IMG_URL + img.img}
+                                        src={img.img}
                                         className="product-img"
                                         alt="img"
                                     />

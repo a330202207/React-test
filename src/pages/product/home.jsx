@@ -1,11 +1,10 @@
 import React, {Component} from "react";
-import {Card, Select, Input, Button, Icon, Table, message, DatePicker, Divider} from "antd";
+import {Card, Select, Input, Button, Icon, Table, message, DatePicker} from "antd";
 import LinkButton from "../../components/link-button";
 
-import {getProductList, addProduct, updateProduct, delProduct} from "../../api";
+import {getProductList, updateStatus, delProduct} from "../../api";
 import {PAGE_SIZE} from '../../utils/constants'
 import moment from 'moment';
-import memoryUtils from "../../utils/memoryUtils";
 
 const Option = Select.Option;
 const {RangePicker} = DatePicker;
@@ -78,7 +77,7 @@ export default class ProductHome extends Component {
                         <span>
                             <LinkButton onClick={() => this.delProduct(product.id)}>删除</LinkButton>
                             <LinkButton
-                                onClick={() => this.props.history.push('/product/edit', {product})}>编辑</LinkButton>
+                                onClick={() => this.props.history.push('/product/save', {product})}>编辑</LinkButton>
                             <LinkButton onClick={() => {
                                 this.updateStatus(product.id, newStatus)
                             }}>{status}</LinkButton>
@@ -101,8 +100,6 @@ export default class ProductHome extends Component {
         this.setState({loading: true}); // 显示loading
 
         const res = await getProductList(page, PAGE_SIZE, productName, statusType, startTime, endTime);
-
-        console.log(res);
         this.setState({loading: false});
         if (res.code === 200) {
             const {list, total} = res.data;
@@ -115,13 +112,26 @@ export default class ProductHome extends Component {
         }
     };
 
-
-    updateStatus = (id, status) => {
-
+    //商品上下架
+    updateStatus = async (id, status) => {
+        const res = await updateStatus({id, status});
+        if (res.code === 200) {
+            message.success('操作成功!');
+            this.getProductList(this.page);
+        } else {
+            message.error('操作失败!');
+        }
     };
 
-    delProduct = (id) => {
-
+    //删除商品
+    delProduct = async (id) => {
+        const res = await delProduct(id);
+        if (res.code === 200) {
+            message.success('操作成功!');
+            this.getProductList(this.page);
+        } else {
+            message.error('操作失败!');
+        }
     };
 
     //时间选择
@@ -147,8 +157,7 @@ export default class ProductHome extends Component {
     }
 
     render() {
-
-        const {total} = this.state.total;
+        const total = this.state.total;
         const title = (
             <span>
                 商品名称
@@ -182,10 +191,10 @@ export default class ProductHome extends Component {
                     this.getProductList(1)
                 }}>搜索</Button>
             </span>
-        )
+        );
 
         const extra = (
-            <Button type='primary' onClick={() => this.props.history.push('/product/add')}>
+            <Button type='primary' onClick={() => this.props.history.push('/product/save', {})}>
                 <Icon type='plus'/>
                 添加商品
             </Button>

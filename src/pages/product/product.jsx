@@ -4,7 +4,7 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import ProductHome from "./home";
 import ProductEdit from "./edit";
 import ProductDetails from "./details";
-import ProductAdd from "./add";
+import ProductSave from "./save";
 import './product.less';
 
 /**
@@ -17,7 +17,7 @@ export default class Product extends Component {
                 <Route path='/product' component={ProductHome} exact/>
                 <Route path='/product/details' component={ProductDetails}/>
                 <Route path='/product/edit' component={ProductEdit}/>
-                <Route path='/product/add' component={ProductAdd}/>
+                <Route path='/product/save' component={ProductSave}/>
                 <Redirect to='/product'/>
             </Switch>
         )

@@ -17,7 +17,7 @@ const menuList = [
                 icon:'bars',
             },
             {
-                title:'商品管理管理',
+                title:'商品管理',
                 key:'/product',
                 icon:'tool',
             },
