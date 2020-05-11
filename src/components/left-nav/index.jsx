@@ -67,6 +67,9 @@ class LeftNav extends Component {
             path = '/product'
         }
 
+        console.log(path)
+        console.log(this.openKey)
+
         const openKey = this.openKey;
         return (
             <div className="left-nav">

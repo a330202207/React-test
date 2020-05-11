@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Switch, Route, Redirect} from "react-router-dom";
 
-import ProductHome from "./home";
+import ProductList from "./list";
 import ProductEdit from "./edit";
 import ProductDetails from "./details";
 import ProductSave from "./save";
@@ -14,7 +14,7 @@ export default class Product extends Component {
     render() {
         return (
             <Switch>
-                <Route path='/product' component={ProductHome} exact/>
+                <Route path='/product/list' component={ProductList} exact/>
                 <Route path='/product/details' component={ProductDetails}/>
                 <Route path='/product/edit' component={ProductEdit}/>
                 <Route path='/product/save' component={ProductSave}/>

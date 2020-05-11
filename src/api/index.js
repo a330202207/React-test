@@ -5,6 +5,25 @@ import {message} from "antd";
 // const BASE = 'http://localhost:9003';
 const BASE = '';
 
+/*
+json 请求函数
+ */
+export const reqWeather = (city) => {
+    return new Promise((resolve, reject) => {
+        // const url = `https://api.seniverse.com/v3/weather/now.json?key=SxjZBKEAoibnCPLPD&location=${city}`;
+        const url = `https://api.seniverse.com/v3/weather/now.json?key=SxjZBKEAoibnCPLPD&location=${city}`;
+
+        jsonp(url, {}, (err, data) => {
+            if (!err) {
+                const {weather} = '';
+                resolve({weather})
+            } else {
+                message.error("获取天气信息失败!");
+            }
+        });
+    });
+};
+
 //登陆
 export const login = (username, password) => ajax(BASE + '/login', {username, password}, 'POST');
 
@@ -72,7 +91,7 @@ export const addProduct = ({name, category_id, price, order_by, details, num, im
 export const delProduct = (id) => ajax(BASE + '/admin/del/product', {id}, 'POST');
 
 //修改商品
-export const updateProduct = ({id, name, category_id, price, order_by, details, num, imgs}) => ajax(BASE + '/admin/save/product', {
+export const saveProduct = ({id, name, category_id, price, order_by, details, num, imgs}) => ajax(BASE + '/admin/save/product', {
     id,
     name,
     category_id,
@@ -89,21 +108,44 @@ export const updateStatus = ({id, status}) => ajax(BASE + '/admin/updateStatus/p
 //删除图片
 export const delImg = (urls) => ajax(BASE + '/admin/del/img', {urls}, 'POST');
 
-/*
-json 请求函数
- */
-export const reqWeather = (city) => {
-    return new Promise((resolve, reject) => {
-        // const url = `https://api.seniverse.com/v3/weather/now.json?key=SxjZBKEAoibnCPLPD&location=${city}`;
-        const url = `https://api.seniverse.com/v3/weather/now.json?key=SxjZBKEAoibnCPLPD&location=${city}`;
+//获取角色列表
+export const getRoleList = (page, page_size) => ajax(BASE + '/admin/get/roleList', {page, page_size});
 
-        jsonp(url, {}, (err, data) => {
-            if (!err) {
-                const {weather} = '';
-                resolve({weather})
-            } else {
-                message.error("获取天气信息失败!");
-            }
-        });
-    });
-};
+//保存角色
+export const saveRole = (page, page_size) => ajax(BASE + '/admin/save/role', {page, page_size});
+
+//删除角色
+export const delRoleList = (page, page_size) => ajax(BASE + '/admin/del/role', {page, page_size});
+
+//获取角色
+export const getRole = (id) => ajax(BASE + '/admin/get/role', {id});
+
+//获取菜单列表
+export const getMenuList = (page, page_size) => ajax(BASE + '/admin/get/menuList', {page, page_size});
+
+//添加顶级菜单
+export const addTopMenu = (id) => ajax(BASE + '/admin/menu/add/topMenu', {id});
+
+//添加子菜单
+export const addSubMenu = (id) => ajax(BASE + '/admin/menu/add/subMenu', {id});
+
+//删除菜单
+export const delMenu = (id) => ajax(BASE + '/admin/del/menu', {id}, 'POST');
+
+//保存顶级菜单
+export const saveTopMenu = (page, page_size) => ajax(BASE + '/admin/save/topMenu', {page, page_size});
+
+//保存子菜单
+export const saveSubMenu = (page, page_size) => ajax(BASE + '/admin/save/subMenu', {page, page_size});
+
+//获取管理员列表
+export const getAdminList = (page, page_size) => ajax(BASE + '/admin/get/adminList', {page, page_size});
+
+//获取管理员
+export const getAdmin = (id) => ajax(BASE + '/admin/get/admin', {id});
+
+//删除用户
+export const delAdmin = (id) => ajax(BASE + '/admin/del/admin', {id}, 'POST');
+
+//保存用户
+export const saveAdmin = (page, page_size) => ajax(BASE + '/admin/save/admin', {page, page_size});

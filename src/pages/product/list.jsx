@@ -9,7 +9,7 @@ import moment from 'moment';
 const Option = Select.Option;
 const {RangePicker} = DatePicker;
 
-export default class ProductHome extends Component {
+export default class ProductList extends Component {
     constructor(props) {
         super(props);
         this.state = {

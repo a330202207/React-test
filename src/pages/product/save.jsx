@@ -2,7 +2,7 @@ import React, {PureComponent} from "react";
 import {Card, Form, Icon, Input, InputNumber, Cascader, Switch, Button, message} from 'antd'
 import PicturesWall from './picturesWall'
 import LinkButton from '../../components/link-button';
-import {getCategories, addProduct, updateProduct, delImg} from "../../api";
+import {getCategories, addProduct, saveProduct, delImg} from "../../api";
 import RichTextEditor from './rich-text-editor'
 
 
@@ -132,7 +132,7 @@ class ProductSave extends PureComponent {
                 if (this.state.isUpdate) {
                     product.id = this.state.product.id;
 
-                    res = await updateProduct(product);
+                    res = await saveProduct(product);
                     if (this.state.delImg.length !== 0) {
                         const imgRes = await delImg(this.state.delImg);
                         if (imgRes.code !== 200) {

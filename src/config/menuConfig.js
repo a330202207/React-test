@@ -1,5 +1,4 @@
 
-
 const menuList = [
     {
         title:'首页',
@@ -7,31 +6,64 @@ const menuList = [
         icon:'home',
     },
     {
-        title:'商品管理',
-        key:'/products',
+        title:'分类管理',
+        key:'/category',
         icon:'appstore',
         children :[
             {
-                title:'品类管理',
-                key:'/category',
+                title:'商品分类列表',
+                key:'/category/list',
                 icon:'bars',
-            },
+            }
+        ]
+    },
+    {
+        title:'商品管理',
+        key:'/product',
+        icon:'appstore',
+        children :[
             {
-                title:'商品管理',
-                key:'/product',
+                title:'商品列表',
+                key:'/product/list',
                 icon:'tool',
             },
         ]
     },
     {
-        title:'用户管理',
-        key:'/user',
-        icon:'user',
+        title:'菜单管理',
+        key:'/menu',
+        icon:'appstore',
+        children :[
+            {
+                title:'菜单列表',
+                key:'/menu/list',
+                icon:'tool',
+            },
+        ]
     },
     {
         title:'角色管理',
         key:'/role',
-        icon:'safety',
+        icon:'user',
+        children :[
+            {
+                title:'角色列表',
+                key:'/role/list',
+                icon:'bars',
+            }
+        ]
+    },
+    {
+        title:'管理员管理',
+        key:'/admin',
+        icon:'user',
+        children :[
+            {
+                title:'管理员列表',
+                key:'/admin/list',
+                icon:'bars',
+            }
+        ]
     },
     {
         title:'图表管理',

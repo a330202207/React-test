@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 
 import Login from './pages/login/login';
-import Admin from './pages/admin/admin';
+import Router from './pages/routes/router';
 
 
 /**
@@ -15,7 +15,7 @@ export default class App extends Component {
                 {/*只匹配一个*/}
                 <Switch>
                     <Route path="/login" component={Login}></Route>
-                    <Route path="/" component={Admin}></Route>
+                    <Route path="/" component={Router}></Route>
                 </Switch>
             </BrowserRouter>
         )

@@ -20,7 +20,8 @@ export default function ajax(url, data = {}, type = 'GET') {
         promise.then(response => {
             resolve(response.data);
         }).catch(e => {
-            message.error(e.message);
+            console.log(e.message);
+            message.error('请求失败，请稍后再试！');
         })
     });
 }
