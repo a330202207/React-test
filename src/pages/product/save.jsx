@@ -155,7 +155,6 @@ class ProductSave extends PureComponent {
         });
     };
 
-
     componentDidMount() {
         this.getAsyncCategories(0);
     }

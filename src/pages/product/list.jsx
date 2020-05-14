@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Card, Select, Input, Button, Icon, Table, message, DatePicker} from "antd";
 import LinkButton from "../../components/link-button";
 
-import {getProductList, updateStatus, delProduct} from "../../api";
+import {getProductList, updateProductStatus, delProduct} from "../../api";
 import {PAGE_SIZE} from '../../utils/constants'
 import moment from 'moment';
 
@@ -40,7 +40,8 @@ export default class ProductList extends Component {
                 key: 'name',
                 render: (product) => (
                     <LinkButton
-                        onClick={() => this.props.history.push('/product/details', {product})}>{product.name}</LinkButton>
+                        onClick={() => this.props.history.push('/product/details', {product})}>{product.name}
+                    </LinkButton>
                 )
             },
             {
@@ -79,7 +80,7 @@ export default class ProductList extends Component {
                             <LinkButton
                                 onClick={() => this.props.history.push('/product/save', {product})}>编辑</LinkButton>
                             <LinkButton onClick={() => {
-                                this.updateStatus(product.id, newStatus)
+                                this.updateProductStatus(product.id, newStatus)
                             }}>{status}</LinkButton>
                         </span>
                     )
@@ -113,8 +114,8 @@ export default class ProductList extends Component {
     };
 
     //商品上下架
-    updateStatus = async (id, status) => {
-        const res = await updateStatus({id, status});
+    updateProductStatus = async (id, status) => {
+        const res = await updateProductStatus({id, status});
         if (res.code === 200) {
             message.success('操作成功!');
             this.getProductList(this.page);

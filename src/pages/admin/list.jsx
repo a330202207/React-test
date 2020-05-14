@@ -6,7 +6,7 @@ import {getAdminList, getAdmin, saveAdminList, delAdminList} from "../../api";
 import moment from "moment";
 
 /**
- * 用户路由
+ * 管理员路由
  */
 export default class list extends Component {
     constructor(props) {
@@ -29,15 +29,45 @@ export default class list extends Component {
             },
             {
                 title: '用户名称',
-                dataIndex: 'name',
-                key: 'name',
+                dataIndex: 'user_name',
+                key: 'user_name',
+            },
+            {
+                title: '电话',
+                dataIndex: 'phone',
+                key: 'phone',
+            },
+            {
+                title: '登陆IP',
+                dataIndex: 'login_ip',
+                key: 'login_ip',
+            },
+            {
+                title: '登陆时间',
+                dataIndex: 'login_date',
+                key: 'login_date',
+                render: (login_date) => (
+                    <span>
+                        {login_date !== 0 ? moment(login_date * 1000).format("YYYY-MM-DD HH:mm:ss") : ''}
+                    </span>
+                )
+            },
+            {
+                title: '登陆次数',
+                dataIndex: 'login_cnt',
+                key: 'login_cnt',
+            },
+            {
+                title: '创建IP',
+                dataIndex: 'create_ip',
+                key: 'create_ip',
             },
             {
                 title: '用户状态',
                 dataIndex: 'status',
                 key: 'status',
                 render: (status) => (
-                    <span>{status === 1 ? '启用' : '禁用'}</span>
+                    <span>{status < 2 ? '启用' : '禁用'}</span>
                 )
             },
             {
@@ -98,7 +128,7 @@ export default class list extends Component {
                 adminList:list
             });
         } else {
-            message.error("获取分类列表失败");
+            message.error("获取管理员列表失败");
         }
     };
 
@@ -106,14 +136,16 @@ export default class list extends Component {
      * 执行异步
      */
     componentDidMount() {
-        this.getAdminList(1);
+        this.getAdminList(1).then(r => function () {
+            console.log("异步获取失败")
+        });
     }
 
     render() {
         const total = this.state.total;
         const title = (
             <span>
-                <Button type='primary' onClick={() => this.props.history.push('/admin/save', {})}>
+                <Button type='primary' onClick={() => this.props.history.push('/admin/add', {})}>
                     <Icon type='plus'/>
                     添加管理员
                 </Button>

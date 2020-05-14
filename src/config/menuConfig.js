@@ -56,11 +56,23 @@ const menuList = [
     {
         title:'管理员管理',
         key:'/admin',
-        icon:'user',
+        icon:'appstore',
         children :[
             {
                 title:'管理员列表',
                 key:'/admin/list',
+                icon:'bars',
+            }
+        ]
+    },
+    {
+        title:'用户管理',
+        key:'/user',
+        icon:'appstore',
+        children :[
+            {
+                title:'管理员列表',
+                key:'/user/list',
                 icon:'bars',
             }
         ]

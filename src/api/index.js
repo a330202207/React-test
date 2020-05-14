@@ -103,7 +103,7 @@ export const saveProduct = ({id, name, category_id, price, order_by, details, nu
 }, 'POST');
 
 //商品上下架
-export const updateStatus = ({id, status}) => ajax(BASE + '/admin/updateStatus/product', {id,status}, 'POST');
+export const updateProductStatus = ({id, status}) => ajax(BASE + '/admin/updateStatus/product', {id,status}, 'POST');
 
 //删除图片
 export const delImg = (urls) => ajax(BASE + '/admin/del/img', {urls}, 'POST');
@@ -111,14 +111,18 @@ export const delImg = (urls) => ajax(BASE + '/admin/del/img', {urls}, 'POST');
 //获取角色列表
 export const getRoleList = (page, page_size) => ajax(BASE + '/admin/get/roleList', {page, page_size});
 
+//获取全部角色
+export const getAllRole = () => ajax(BASE + '/admin/get/all/role');
+
 //保存角色
 export const saveRole = (page, page_size) => ajax(BASE + '/admin/save/role', {page, page_size});
 
 //删除角色
-export const delRoleList = (page, page_size) => ajax(BASE + '/admin/del/role', {page, page_size});
+export const delRole = (id) => ajax(BASE + '/admin/del/role', {id}, 'POST');
 
 //获取角色
 export const getRole = (id) => ajax(BASE + '/admin/get/role', {id});
+
 
 //获取菜单列表
 export const getMenuList = (page, page_size) => ajax(BASE + '/admin/get/menuList', {page, page_size});
@@ -146,6 +150,9 @@ export const getAdmin = (id) => ajax(BASE + '/admin/get/admin', {id});
 
 //删除用户
 export const delAdmin = (id) => ajax(BASE + '/admin/del/admin', {id}, 'POST');
+
+//添加用户
+export const addAdmin = () => ajax(BASE + 'admin/add/admin', {});
 
 //保存用户
 export const saveAdmin = (page, page_size) => ajax(BASE + '/admin/save/admin', {page, page_size});

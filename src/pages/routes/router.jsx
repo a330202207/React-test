@@ -9,6 +9,7 @@ import Product from "../product/product";
 import Menu from "../menu/menu";
 import Role from "../role/role";
 import Admin from "../admin/admin";
+import User from "../user/user";
 import Bar from "../charts/bar";
 import Line from "../charts/line";
 import Pie from "../charts/pie";
@@ -41,6 +42,7 @@ export default class Router extends Component {
                             <Route path="/menu" component={Menu}/>
                             <Route path="/role" component={Role}/>
                             <Route path="/admin" component={Admin}/>
+                            <Route path="/user" component={User}/>
                             <Route path="/charts/bar" component={Bar}/>
                             <Route path="/charts/line" component={Line}/>
                             <Route path="/charts/pie" component={Pie}/>

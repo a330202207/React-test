@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, Input, message, Select, Table} from "antd";
+import {Button, Card, Icon, message, Modal, Table} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
 import LinkButton from "../../components/link-button";
-import {getRoleList, getRole, saveRoleList, delRoleList} from "../../api";
+import {getRoleList, getRole, delRole} from "../../api";
+
+import RoleAuth from "./roleAuth";
 import moment from "moment";
 
 /**
@@ -13,6 +15,7 @@ export default class list extends Component {
         super(props);
         this.state = {
             total: 0,
+            showStatus: 0,                  //是否显示确认框，0：都不显示，1：显示角色详情
             roleList: [],
             loading: false,                 //是否正在获取数据
             columns: this.initColumns(),
@@ -29,15 +32,11 @@ export default class list extends Component {
             },
             {
                 title: '角色名称',
-                dataIndex: 'name',
                 key: 'name',
-            },
-            {
-                title: '角色状态',
-                dataIndex: 'status',
-                key: 'status',
-                render: (status) => (
-                    <span>{status === 1 ? '启用' : '禁用'}</span>
+                render: (role) => (
+                    <LinkButton
+                        onClick={() => this.saveRole(role.id)}>{role.name}
+                    </LinkButton>
                 )
             },
             {
@@ -63,22 +62,68 @@ export default class list extends Component {
             {
                 title: '操作',
                 width: 300,
-                render: (product) => {
-                    const status = product.status === 1 ? "启用" : "禁用";
-                    const newStatus = product.status === 1 ? 2 : 1;
+                render: (role) => {
                     return (
                         <span>
-                            <LinkButton onClick={() => this.delProduct(product.id)}>删除</LinkButton>
-                            <LinkButton
-                                onClick={() => this.props.history.push('/product/save', {product})}>编辑</LinkButton>
-                            <LinkButton onClick={() => {
-                                this.updateStatus(product.id, newStatus)
-                            }}>{status}</LinkButton>
+                            <LinkButton onClick={() => this.showRoleAuth(role.id)}>查看权限</LinkButton>
+                            <LinkButton onClick={() => this.delRole(role.id)}>删除</LinkButton>
                         </span>
                     )
                 }
             },
         ];
+    };
+
+    //角色权限
+    showRoleAuth = (id) => {
+        // this.props.history.push('/role/details', {id})
+
+        this.roleId = id;
+        this.setState({showStatus:1})
+
+        // getRole(id).then(res => {
+        //     if (res.code === 200) {
+        //         const role = res.data;
+        //         this.props.history.push('/role/details', {role})
+        //     } else {
+        //         message.error("获取数据失败！");
+        //     }
+        // })
+    };
+
+    /**
+     * 取消弹出框
+     */
+    handleCancel = () => {
+        //隐藏确认框
+        this.setState({showStatus: 0});
+    };
+
+    //保存角色
+    saveRole = (id) => {
+        if (id !== 0) {
+            getRole(id).then(res => {
+                if (res.code === 200) {
+                    const role = res.data;
+                    this.props.history.push('/role/save', {role})
+                } else {
+                    message.error("获取数据失败！");
+                }
+            })
+        } else {
+            this.props.history.push('/role/save', {})
+        }
+    };
+
+    //删除角色
+    delRole = async (id) => {
+        const res = await delRole(id);
+        if (res.code === 200) {
+            message.success('操作成功!');
+            this.getRoleList(this.page);
+        } else {
+            message.error('操作失败!');
+        }
     };
 
     //获取角色列表
@@ -92,10 +137,10 @@ export default class list extends Component {
 
         this.setState({loading: false});
         if (res.code === 200) {
-            const {list,total} = res.data;
+            const {list, total} = res.data;
             this.setState({
                 total,
-                roleList:list
+                roleList: list
             });
         } else {
             message.error("获取分类列表失败");
@@ -113,7 +158,7 @@ export default class list extends Component {
         const total = this.state.total;
         const title = (
             <span>
-                <Button type='primary' onClick={() => this.props.history.push('/role/save', {})}>
+                <Button type='primary' onClick={() => this.saveRole(0)}>
                     <Icon type='plus'/>
                     添加角色
                 </Button>
@@ -135,6 +180,18 @@ export default class list extends Component {
                         onChange: this.getRoleList
                     }}
                 />
+
+                <Modal
+                    title="查看权限"
+                    maskClosable={true}
+                    visible={this.state.showStatus === 1}
+                    onOk={this.handleCancel}
+                    onCancel={this.handleCancel}
+                >
+                    <RoleAuth
+                        id={this.roleId}
+                    />
+                </Modal>
             </Card>
         )
     }
