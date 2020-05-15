@@ -152,7 +152,7 @@ export const getAdmin = (id) => ajax(BASE + '/admin/get/admin', {id});
 export const delAdmin = (id) => ajax(BASE + '/admin/del/admin', {id}, 'POST');
 
 //添加用户
-export const addAdmin = () => ajax(BASE + 'admin/add/admin', {});
+export const addAdmin = ({user_name, password, phone, role_ids, status}) => ajax(BASE + 'admin/add/admin', {}, 'POST');
 
 //保存用户
 export const saveAdmin = (page, page_size) => ajax(BASE + '/admin/save/admin', {page, page_size});
