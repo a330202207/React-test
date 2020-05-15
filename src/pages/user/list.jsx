@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, Input, message, Select, Table} from "antd";
+import {Button, Card, Icon, message, Table, Popconfirm} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
 import LinkButton from "../../components/link-button";
-import {getAdminList, getAdmin, saveAdminList, delAdminList} from "../../api";
+import {getAdminList, getAdmin, delAdmin} from "../../api";
 import moment from "moment";
 
 /**
@@ -46,6 +46,11 @@ export default class list extends Component {
                 title: '登陆时间',
                 dataIndex: 'login_date',
                 key: 'login_date',
+                render: (login_date) => (
+                    <span>
+                        {login_date !== 0 ? moment(login_date).format("YYYY-MM-DD HH:mm:ss") : ''}
+                    </span>
+                )
             },
             {
                 title: '登陆次数',
@@ -88,17 +93,14 @@ export default class list extends Component {
             {
                 title: '操作',
                 width: 300,
-                render: (product) => {
-                    const status = product.status === 1 ? "启用" : "禁用";
-                    const newStatus = product.status === 1 ? 2 : 1;
+                render: (admin) => {
                     return (
                         <span>
-                            <LinkButton onClick={() => this.delProduct(product.id)}>删除</LinkButton>
-                            <LinkButton
-                                onClick={() => this.props.history.push('/user/save', {product})}>编辑</LinkButton>
-                            <LinkButton onClick={() => {
-                                this.updateStatus(product.id, newStatus)
-                            }}>{status}</LinkButton>
+                            {/*<LinkButton onClick={() => this.props.history.push('/user/save', {admin})}>编辑</LinkButton>*/}
+                            <LinkButton onClick={() => this.saveAdminInfo(admin.id)}>编辑</LinkButton>
+                             <Popconfirm title="确定要删除么" okText="是" cancelText="否" onConfirm={() => this.delAdmin(admin.id)}>
+                                 <a href="#" >删除</a>
+                            </Popconfirm>
                         </span>
                     )
                 }
@@ -117,13 +119,37 @@ export default class list extends Component {
 
         this.setState({loading: false});
         if (res.code === 200) {
-            const {list,total} = res.data;
+            const {list, total} = res.data;
             this.setState({
                 total,
-                adminList:list
+                adminList: list
             });
         } else {
             message.error("获取管理员列表失败");
+        }
+    };
+
+    //获取用户信息
+    saveAdminInfo = (id) => {
+        getAdmin(id).then(res => {
+            if (res.code === 200) {
+                const admin = res.data;
+                console.log(admin)
+                this.props.history.push('/user/save', {admin});
+            } else {
+                message.error("获取管理员信息失败！")
+            }
+        })
+    };
+
+    //删除管理员
+    delAdmin = async (id) => {
+        const res = await delAdmin(id);
+        if (res.code === 200) {
+            message.success('操作成功!');
+            this.getAdminList(this.page);
+        } else {
+            message.error('操作失败!');
         }
     };
 

@@ -1,19 +1,20 @@
 import React, {Component} from "react";
 import {Card, Form, Icon, Input, Select, message, Switch, Button} from "antd";
 import LinkButton from "../../components/link-button";
-import {getAllRole, addAdmin} from "../../api";
+import {getAllRole, saveAdmin} from "../../api";
 
 const Item = Form.Item;
 const {Option} = Select;
 
 /**
- * 添加管理员
+ * 保存管理员
  */
-class addUser extends Component {
+class saveUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
             status: 1,
+            admin: this.props.location.state.admin,
             roleList: [],
         }
     };
@@ -21,13 +22,13 @@ class addUser extends Component {
     //提交
     handleSubmit = () => {
         this.props.form.validateFields(async (err, values) => {
-            console.log(values);
             if (!err) {
-                const {user_name, role_id, password, phone} = values;
+                const {user_name, password, role_id, phone} = values;
+                const id = this.state.admin.admin_info.id;
                 const status = this.state.status;
-                const adminInfo = {user_name, password, phone, role_id, status};
+                const adminInfo = {id, user_name, password, phone, role_id, status};
                 console.log(adminInfo);
-                const res = await addAdmin(adminInfo);
+                const res = await saveAdmin(adminInfo);
                 if (res.code === 200) {
                     message.success('操作成功!');
                     this.props.history.goBack()
@@ -72,6 +73,7 @@ class addUser extends Component {
 
     render() {
         const {getFieldDecorator} = this.props.form;
+        console.log(this.state.admin)
         const title = (
             <span>
                 <LinkButton>
@@ -81,7 +83,7 @@ class addUser extends Component {
                       onClick={() => this.props.history.goBack()}
                   />
                 </LinkButton>
-                <span>{this.state.admin ? '编辑管理员' : '添加管理员'}</span>
+                <span>编辑管理员</span>
             </span>
         );
 
@@ -99,7 +101,7 @@ class addUser extends Component {
                     >
                         {
                             getFieldDecorator('user_name', {
-                                initialValue: '',
+                                initialValue: this.state.admin.admin_info.user_name,
                                 rules: [
                                     {required: true, message: '用户名称必须输入'}
                                 ]
@@ -112,7 +114,7 @@ class addUser extends Component {
                     >
                         {
                             getFieldDecorator('phone', {
-                                initialValue: '',
+                                initialValue: this.state.admin.admin_info.phone,
                                 rules: [
                                     {required: true, message: '电话必须输入'}
                                 ]
@@ -142,7 +144,7 @@ class addUser extends Component {
                     >
                         {
                             getFieldDecorator('role_id', {
-                                initialValue: 0,
+                                initialValue: this.state.admin.my_role.role_id,
                                 rules: [
                                     {validator: this.validateRole},
                                 ]
@@ -164,7 +166,7 @@ class addUser extends Component {
                         <Switch
                             checkedChildren="启用"
                             unCheckedChildren="禁用"
-                            defaultChecked
+                            defaultChecked={this.state.admin.admin_info.status === 1}
                             onChange={() => this.onStatusChange(this.state.status)}
                         />
                     </Item>
@@ -177,4 +179,4 @@ class addUser extends Component {
     }
 }
 
-export default Form.create()(addUser);
+export default Form.create()(saveUser);
