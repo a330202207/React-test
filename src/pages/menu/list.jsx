@@ -1,9 +1,11 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, Input, message, Select, Table} from "antd";
+import {Button, Card, Icon, message, Table, Modal} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
 import LinkButton from "../../components/link-button";
-import {getMenuList, getMenu, saveMenuList, delMenuList} from "../../api";
+import {getMenuList, getMenu, delMenuList} from "../../api";
 import moment from "moment";
+import Add from "./add";
+import Save from "./save";
 
 /**
  * 菜单路由
@@ -12,9 +14,11 @@ export default class list extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            parentId: 0,
             total: 0,
             menuList: [],
             loading: false,                 //是否正在获取数据
+            showStatus: 0,                  //是否显示确认框，0：都不显示，1：显示添加，2：显示更新
             columns: this.initColumns(),
         }
     };
@@ -102,6 +106,37 @@ export default class list extends Component {
         }
     };
 
+    //添加顶级分类
+    showAdd = () => {
+        this.setState({showStatus: 1});
+    };
+
+    //添加菜单
+    addMenu = () => {
+
+    };
+
+    //保存菜单
+    saveMenu = () => {
+
+    };
+
+    //删除菜单
+    delMenu = () => {
+
+    };
+
+    /**
+     * 取消弹出框
+     */
+    handleCancel = () => {
+        //清除输入数据
+        this.form.resetFields();
+
+        //隐藏确认框
+        this.setState({showStatus: 0});
+    };
+
     /**
      * 执行异步
      */
@@ -113,9 +148,10 @@ export default class list extends Component {
         const total = this.state.total;
         const title = (
             <span>
-                <Button type='primary' onClick={() => this.props.history.push('/menu/save', {})}>
+                {/*<Button type='primary' onClick={() => this.props.history.push('/menu/save', {})}>*/}
+                <Button type='primary' onClick={this.showAdd}>
                     <Icon type='plus'/>
-                    添加菜单
+                    添加顶级菜单
                 </Button>
             </span>
         );
@@ -135,6 +171,33 @@ export default class list extends Component {
                         onChange: this.getMenuList
                     }}
                 />
+
+                <Modal
+                    title="添加菜单"
+                    visible={this.state.showStatus === 1}
+                    onOk={this.addMenu}
+                    onCancel={this.handleCancel}
+                >
+                    <Add
+                        parentId={this.state.parentId}
+                        setForm={(form) => {
+                            this.form = form
+                        }}
+                    />
+                </Modal>
+                <Modal
+                    title="更新菜单"
+                    visible={this.state.showStatus === 2}
+                    onOk={this.saveMenu}
+                    onCancel={this.handleCancel}
+                >
+                    <Save
+                        parentId={this.state.parentId}
+                        setForm={(form) => {
+                            this.form = form
+                        }}
+                    />
+                </Modal>
             </Card>
         )
     }

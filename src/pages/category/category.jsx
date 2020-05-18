@@ -3,8 +3,8 @@ import {Button, Card, Icon, message, Table, Modal} from 'antd';
 import LinkButton from "../../components/link-button";
 import {getCategoryList, addCategory, updateCategory, delCategory} from "../../api";
 import {PAGE_SIZE} from '../../utils/constants'
-import AddForm from "./add-form";
-import UpdateForm from "./update-form";
+import Add from "./add";
+import Save from "./save";
 
 /**
  * 分类路由路由
@@ -253,7 +253,7 @@ export default class Category extends Component {
                     onOk={this.addCategory}
                     onCancel={this.handleCancel}
                 >
-                    <AddForm
+                    <Add
                         categoryList={this.state.categoryList}
                         parentId={this.state.parentId}
                         setForm={(form) => {
@@ -268,7 +268,7 @@ export default class Category extends Component {
                     onOk={this.updateCategory}
                     onCancel={this.handleCancel}
                 >
-                    <UpdateForm
+                    <Save
                         categoryList={this.state.categoryList}
                         categoryInfo={category}
                         setForm={(form) => {

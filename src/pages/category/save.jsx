@@ -6,7 +6,7 @@ import {Form, Input, InputNumber, Select} from "antd";
 const Item = Form.Item;
 const Option = Select.Option;
 
-class UpdateForm extends Component {
+class Save extends Component {
 
     constructor(props) {
         super(props);
@@ -77,4 +77,4 @@ class UpdateForm extends Component {
     }
 }
 
-export default Form.create()(UpdateForm);
+export default Form.create()(Save);
