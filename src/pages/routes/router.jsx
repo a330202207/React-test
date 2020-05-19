@@ -4,7 +4,7 @@ import {Layout} from 'antd';
 import LeftNav from "../../components/left-nav";
 import Header from "../../components/header";
 import Home from "../home/home";
-import Category from "../category/category";
+import List from "../category/category";
 import Product from "../product/product";
 import Menu from "../menu/menu";
 import Role from "../role/role";
@@ -37,7 +37,7 @@ export default class Router extends Component {
                     <Content style={{margin:20, background: "#fff"}}>
                         <Switch>
                             <Route path="/home" component={Home}/>
-                            <Route path="/category" component={Category}/>
+                            <Route path="/category" component={List}/>
                             <Route path="/product" component={Product}/>
                             <Route path="/menu" component={Menu}/>
                             <Route path="/role" component={Role}/>

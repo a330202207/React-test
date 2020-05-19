@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Form, Icon, Input, InputNumber, Cascader, Switch, Button, message} from 'antd'
+import {Card, Form, Icon, Input} from 'antd'
 import LinkButton from "../../components/link-button";
 
 
@@ -19,9 +19,7 @@ class saveRole extends Component {
         };
     };
 
-
     render() {
-        // console.log(!!this.state.role ?? '哈哈哈');
         const {getFieldDecorator} = this.props.form;
         const title = (
             <span>

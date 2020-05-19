@@ -99,6 +99,7 @@ export default class list extends Component {
                             {/*<LinkButton onClick={() => this.props.history.push('/user/save', {admin})}>编辑</LinkButton>*/}
                             <LinkButton onClick={() => this.saveAdminInfo(admin.id)}>编辑</LinkButton>
                              <Popconfirm title="确定要删除么" okText="是" cancelText="否" onConfirm={() => this.delAdmin(admin.id)}>
+                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                  <a href="#" >删除</a>
                             </Popconfirm>
                         </span>

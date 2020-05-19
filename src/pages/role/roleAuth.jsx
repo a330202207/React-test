@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {Card, Icon, List, Tree} from 'antd'
+import {Card, List, Tree} from 'antd'
 
-import LinkButton from '../../components/link-button';
+// import LinkButton from '../../components/link-button';
 
 const {TreeNode} = Tree;
 

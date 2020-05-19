@@ -14,9 +14,9 @@ class AddForm extends Component {
     };
 
     static propTypes = {
-        setForm: PropTypes.func.isRequired, // 用来传递form对象的函数
-        categoryList: PropTypes.array.isRequired, // 一级分类的数组
-        parentId: PropTypes.number.isRequired, // 父分类的ID
+        setForm: PropTypes.func.isRequired,         //用来传递form对象的函数
+        categoryList: PropTypes.array.isRequired,   //一级分类的数组
+        parentId: PropTypes.number.isRequired,      //父分类的ID
     };
 
     render() {
@@ -49,7 +49,7 @@ class AddForm extends Component {
                             initialValue: parentId
                         })(
                             <Select>
-                                <Option value={0} disabled={parentId !== 0 ?  true : false}>一级分类</Option>
+                                <Option value={0} disabled={parentId !== 0}>一级分类</Option>
                                 {
                                     categoryList.map(c => <Option key={c.id} value={c.id}>{c.name}</Option>)
                                 }

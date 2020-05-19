@@ -1,39 +1,37 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, message, Table, Modal, Popconfirm} from "antd";
-import {PAGE_SIZE} from "../../utils/constants";
+import {Button, Card, Icon, message, Table, Modal, Popconfirm} from 'antd';
 import LinkButton from "../../components/link-button";
-import {getMenuList, addMenu, delMenu, saveMenu} from "../../api";
+import {getCategoryList, addCategory, saveCategory, delCategory} from "../../api";
+import {PAGE_SIZE} from '../../utils/constants'
 import Add from "./add";
 import Save from "./save";
 
 /**
- * 菜单路由
+ * 分类路由路由
  */
-export default class list extends Component {
+export default class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
             parentId: 0,
-            parentName: '',
             total: 0,
-            menuList: [],
-            subMenuList: [],
+            parentName: '',
+            categoryList: [],
+            subCategoryList: [],
             loading: false,                 //是否正在获取数据
-            showStatus: 0,                  //是否显示确认框，0：都不显示，1：显示添加，2：显示更新
             columns: this.initColumns(),
+            showStatus: 0,                  //是否显示确认框，0：都不显示，1：显示添加，2：显示更新
         }
     };
 
-    //初始化数据
+    /**
+     * 初始化Table所有列数组
+     * @returns {[{dataIndex: string, title: string, key: string}, {width: number, title: string, render: (function(*=): *)}]}
+     */
     initColumns = () => {
         return [
             {
-                title: '菜单ID',
-                dataIndex: 'id',
-                key: 'id',
-            },
-            {
-                title: '菜单名称',
+                title: '分类名称',
                 dataIndex: 'name',
                 key: 'name',
             },
@@ -45,27 +43,27 @@ export default class list extends Component {
             {
                 title: '操作',
                 width: 300,
-                render: (menu) => {
-                    return (
-                        <span>
-                             <LinkButton onClick={() => this.showSave(menu)}>编辑</LinkButton>
-                            {this.state.parentId === 0 ? <LinkButton onClick={() => {
-                                this.showSubMenuList(menu)
-                            }}>查看</LinkButton> : null}
-                            <Popconfirm title="确定要删除么" okText="是" cancelText="否"
-                                        onConfirm={() => this.delMenu(menu.id)}>
-                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                 <a href="#">删除</a>
-                            </Popconfirm>
-                        </span>
-                    )
-                }
+                render: (category) => (
+                    <span>
+                        <LinkButton onClick={() => this.showUpdate(category)}>编辑</LinkButton>
+                        {this.state.parentId === 0 ? <LinkButton onClick={() => {
+                            this.showSubCategoryList(category)
+                        }}>查看</LinkButton> : null}
+                        <Popconfirm title="确定要删除么" okText="是" cancelText="否" onConfirm={() => this.delCategory(category.id)}>
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                 <a href="#" >删除</a>
+                        </Popconfirm>
+                    </span>
+                )
             },
         ];
     };
 
-    //获取菜单列表
-    getMenuList = async (page = 1) => {
+    /**
+     *  异步获取分类列表
+     * @returns {Promise<void>}
+     */
+    getCategoryList = async (page = 1) => {
         this.page = page;
 
         //loading
@@ -73,48 +71,51 @@ export default class list extends Component {
 
         const parentId = this.state.parentId;
 
-        const res = await getMenuList(parentId, page, PAGE_SIZE);
+        const res = await getCategoryList(parentId, page, PAGE_SIZE);
 
         this.setState({loading: false});
         if (res.code === 200) {
-            const {list, total} = res.data;
+            const {list,total} = res.data;
+
             if (parentId === 0) {
                 this.setState({
                     total,
-                    menuList: list
+                    categoryList:list
                 });
             } else {
                 this.setState({
                     total,
-                    subMenuList: list
+                    subCategoryList: list
                 });
             }
-
-
         } else {
-            message.error("获取菜单列表失败");
+            message.error("获取分类列表失败");
         }
     };
 
-    //显示子菜单
-    showSubMenuList = (menu) => {
+    /**
+     *  显示子集分类列表
+     * @param category
+     */
+    showSubCategoryList = (category) => {
         this.setState({
-            parentId: menu.id,
-            parentName: menu.name,
+            parentId: category.id,
+            parentName: category.name,
         }, () => {
+            console.log(this.state.parentId)
             // 在状态更新且重新render()后执行
-            this.getMenuList()
+            this.getCategoryList()
         });
     };
 
     /**
-     * 显示一级菜单列表
+     * 显示一级分类列表
      */
-    showMenuList = () => {
+    showCategoryList = () => {
         this.setState({
             parentId: 0,
             parenName: '',
-            subMenuList: []
+            subCategoryList: []
         });
     };
 
@@ -129,33 +130,32 @@ export default class list extends Component {
         this.setState({showStatus: 0});
     };
 
-    //显示添加顶级菜单
+    //显示添加确认框
     showAdd = () => {
         this.setState({showStatus: 1});
     };
 
-    //显示编辑确认框
-    showSave = (menu) => {
-        this.menu = menu;
+    //显示修改确认框
+    showUpdate = (category) => {
+        this.category = category;
         this.setState({showStatus: 2});
     };
 
-    //添加菜单
-    addMenu = () => {
+    //添加分类
+    addCategory = () => {
         this.form.validateFields(async (err, val) => {
             if (!err) {
                 //隐藏确认框
                 this.setState({showStatus: 0});
-                const {name, parent_id, order_by, menu_router} = val;
-
+                const {name, parent_id, order_by} = val;
                 //清除输入数据
                 this.form.resetFields();
                 //更新分类
-                const res = await addMenu({name, parent_id, order_by, menu_router});
+                const res = await addCategory({name, parent_id, order_by});
                 if (res.code === 200) {
                     message.success('添加成功!');
                     //重新显示列表
-                    this.getMenuList();
+                    this.getCategoryList();
                 } else {
                     message.error(res.msg)
                 }
@@ -163,110 +163,114 @@ export default class list extends Component {
         });
     };
 
-    //保存菜单
-    saveMenu = () => {
+    //修改分类
+    saveCategory = () => {
         this.form.validateFields(async (err, val) => {
             if (!err) {
                 //隐藏确认框
                 this.setState({showStatus: 0});
 
-                const id = this.menu.id;
-                const {name, parent_id, order_by, menu_router} = val;
+                const id = this.category.id;
+                const {name, parent_id, order_by} = val;
 
                 //清除输入数据
                 this.form.resetFields();
 
                 //更新分类
-                const res = await saveMenu({id, name, parent_id, order_by, menu_router});
+                const res = await saveCategory({id, name, parent_id, order_by});
                 if (res.code === 200) {
                     //重新显示列表
-                    this.getMenuList();
+                    this.getCategoryList();
                 } else {
                     message.error(res.msg);
                 }
             }
         });
+
     };
 
-    //删除菜单
-    delMenu = async (id) => {
-        const res = await delMenu(id);
+    //删除分类
+    delCategory = async (id) => {
+        const res = await delCategory(id);
         if (res.code === 200) {
             message.success("删除成功!");
             //重新显示列表
-            this.getMenuList();
+            this.getCategoryList();
         } else {
             message.error(res.msg)
         }
     };
 
+
     /**
      * 执行异步
      */
     componentDidMount() {
-        this.getMenuList(1);
+        this.getCategoryList(1);
     }
 
     render() {
-        const menu = this.menu || {};
+        const category = this.category || {};
         const total = this.state.total;
 
         //Card左侧
-        const title = this.state.parentId === 0 ? '顶级菜单列表' : (
+        const title = this.state.parentId === 0 ? '一级分类列表' : (
             <span>
                 <LinkButton onClick={() => {
-                    this.showMenuList()
-                }}>顶级列表</LinkButton>
+                    this.showCategoryList()
+                }}>一级分类列表</LinkButton>
                  <Icon type='arrow-right' style={{marginRight: 5}}/>
                 <span>{this.state.parentName}</span>
             </span>
         );
 
+        //Card右侧
         const extra = (
             <Button type='primary' onClick={this.showAdd}>
-                <Icon type="plus"/> 添加菜单
+                <Icon type="plus"/> 添加
             </Button>
         );
-
         return (
             <Card title={title} extra={extra}>
                 <Table
                     bordered
                     rowKey="id"
                     loading={this.state.loading}
-                    dataSource={this.state.parentId === 0 ? this.state.menuList : this.state.subMenuList}
+                    dataSource={this.state.parentId === 0 ? this.state.categoryList : this.state.subCategoryList}
                     columns={this.state.columns}
                     pagination={{
+                        current:this.page,
                         total,
                         defaultPageSize: PAGE_SIZE,
                         showQuickJumper: true,
-                        onChange: this.getMenuList
+                        onChange: this.getCategoryList
                     }}
                 />
 
                 <Modal
-                    title="添加菜单"
+                    title="添加分类"
                     visible={this.state.showStatus === 1}
-                    onOk={this.addMenu}
+                    onOk={this.addCategory}
                     onCancel={this.handleCancel}
                 >
                     <Add
-                        menuList={this.state.menuList}
+                        categoryList={this.state.categoryList}
                         parentId={this.state.parentId}
                         setForm={(form) => {
                             this.form = form
                         }}
                     />
                 </Modal>
+
                 <Modal
-                    title="更新菜单"
+                    title="更新分类"
                     visible={this.state.showStatus === 2}
-                    onOk={this.saveMenu}
+                    onOk={this.saveCategory}
                     onCancel={this.handleCancel}
                 >
                     <Save
-                        menuList={this.state.menuList}
-                        menuInfo={menu}
+                        categoryList={this.state.categoryList}
+                        categoryInfo={category}
                         setForm={(form) => {
                             this.form = form
                         }}

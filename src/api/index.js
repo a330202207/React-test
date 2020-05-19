@@ -40,7 +40,7 @@ export const getCategoryList = (parent_id, page, page_size) => ajax(BASE + '/adm
 });
 
 //获取多个分类
-export const getCategories = (parent_id) => ajax(BASE + '/admin/get/categories', {parent_id,});
+export const getCategories = (parent_id) => ajax(BASE + '/admin/get/categories', {parent_id});
 
 //获取分类
 export const getCategory = (id) => ajax(BASE + '/admin/get/category', {id});
@@ -56,7 +56,7 @@ export const addCategory = ({name, parent_id, order_by}) => ajax(BASE + '/admin/
 export const delCategory = (id) => ajax(BASE + '/admin/del/category', {id}, 'POST');
 
 //更新分类
-export const updateCategory = ({id, name, parent_id, order_by}) => ajax(BASE + '/admin/save/category/', {
+export const saveCategory = ({id, name, parent_id, order_by}) => ajax(BASE + '/admin/save/category/', {
     id,
     name,
     parent_id,
@@ -103,7 +103,7 @@ export const saveProduct = ({id, name, category_id, price, order_by, details, nu
 }, 'POST');
 
 //商品上下架
-export const updateProductStatus = ({id, status}) => ajax(BASE + '/admin/updateStatus/product', {id,status}, 'POST');
+export const updateProductStatus = ({id, status}) => ajax(BASE + '/admin/updateStatus/product', {id, status}, 'POST');
 
 //删除图片
 export const delImg = (urls) => ajax(BASE + '/admin/del/img', {urls}, 'POST');
@@ -125,22 +125,31 @@ export const getRole = (id) => ajax(BASE + '/admin/get/role', {id});
 
 
 //获取菜单列表
-export const getMenuList = (page, page_size) => ajax(BASE + '/admin/get/menuList', {page, page_size});
+export const getMenuList = (parent_id, page, page_size) => ajax(BASE + '/admin/get/menuList', {
+    parent_id,
+    page,
+    page_size
+});
 
-//添加顶级菜单
-export const addTopMenu = (id) => ajax(BASE + '/admin/menu/add/topMenu', {id});
-
-//添加子菜单
-export const addSubMenu = (id) => ajax(BASE + '/admin/menu/add/subMenu', {id});
+//添加菜单
+export const addMenu = ({parent_id, name, order_by, menu_router}) => ajax(BASE + '/admin/add/menu', {
+    parent_id,
+    name,
+    order_by,
+    menu_router
+}, 'POST');
 
 //删除菜单
 export const delMenu = (id) => ajax(BASE + '/admin/del/menu', {id}, 'POST');
 
-//保存顶级菜单
-export const saveTopMenu = (page, page_size) => ajax(BASE + '/admin/save/topMenu', {page, page_size});
-
-//保存子菜单
-export const saveSubMenu = (page, page_size) => ajax(BASE + '/admin/save/subMenu', {page, page_size});
+//保存菜单
+export const saveMenu = ({id, parent_id, name, order_by, menu_router}) => ajax(BASE + '/admin/save/menu', {
+    id,
+    parent_id,
+    name,
+    order_by,
+    menu_router
+}, 'POST');
 
 //获取管理员列表
 export const getAdminList = (page, page_size) => ajax(BASE + '/admin/get/adminList', {page, page_size});
@@ -152,7 +161,20 @@ export const getAdmin = (id) => ajax(BASE + '/admin/get/admin', {id});
 export const delAdmin = (id) => ajax(BASE + '/admin/del/admin', {id}, 'POST');
 
 //添加用户
-export const addAdmin = ({user_name, password, phone, role_id, status}) => ajax(BASE + '/admin/add/admin', {user_name, password, phone, role_id, status}, 'POST');
+export const addAdmin = ({user_name, password, phone, role_id, status}) => ajax(BASE + '/admin/add/admin', {
+    user_name,
+    password,
+    phone,
+    role_id,
+    status
+}, 'POST');
 
 //保存用户
-export const saveAdmin = ({id, user_name, password, phone, role_id, status}) => ajax(BASE + '/admin/save/admin', {id, user_name, password, phone, role_id, status}, 'POST');
+export const saveAdmin = ({id, user_name, password, phone, role_id, status}) => ajax(BASE + '/admin/save/admin', {
+    id,
+    user_name,
+    password,
+    phone,
+    role_id,
+    status
+}, 'POST');

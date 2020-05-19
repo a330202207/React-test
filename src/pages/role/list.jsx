@@ -99,6 +99,10 @@ export default class list extends Component {
         this.setState({showStatus: 0});
     };
 
+    addRole = () => {
+        this.props.history.push('/role/add')
+    };
+
     //保存角色
     saveRole = (id) => {
         if (id !== 0) {
@@ -158,7 +162,7 @@ export default class list extends Component {
         const total = this.state.total;
         const title = (
             <span>
-                <Button type='primary' onClick={() => this.saveRole(0)}>
+                <Button type='primary' onClick={() => this.addRole()}>
                     <Icon type='plus'/>
                     添加角色
                 </Button>

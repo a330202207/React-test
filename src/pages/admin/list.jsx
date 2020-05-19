@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, Input, message, Select, Table} from "antd";
+import {Button, Card, Icon, message, Table} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
 import LinkButton from "../../components/link-button";
-import {getAdminList, getAdmin, saveAdminList, delAdminList} from "../../api";
+import {getAdminList} from "../../api";
 import moment from "moment";
 
 /**
@@ -122,10 +122,10 @@ export default class list extends Component {
 
         this.setState({loading: false});
         if (res.code === 200) {
-            const {list,total} = res.data;
+            const {list, total} = res.data;
             this.setState({
                 total,
-                adminList:list
+                adminList: list
             });
         } else {
             message.error("获取管理员列表失败");

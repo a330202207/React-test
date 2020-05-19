@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, Cascader, Form, Icon, Input, InputNumber, message, Switch} from "antd";
+import {Card, Form, Icon, Input, InputNumber, message, Switch} from "antd";
 import LinkButton from "../../components/link-button";
 import {addProduct, delImg, saveProduct} from "../../api";
 
@@ -31,10 +31,6 @@ class saveAdmin extends Component {
                 const details = this.editor.current.getDetail();
                 const product = {name, order_by, price, imgs, status, details, category_id, num};
                 let res;
-                // console.log(product);
-                // console.log(this.state.delImg);
-                // console.log(this.state.isUpdate);
-
 
                 if (this.state.isUpdate) {
                     product.id = this.state.product.id;
