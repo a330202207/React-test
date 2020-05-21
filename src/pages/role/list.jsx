@@ -1,9 +1,11 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, message, Modal, Table} from "antd";
+import {Button, Card, Icon, message, Modal, Popconfirm, Table} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
 import LinkButton from "../../components/link-button";
 import {getRoleList, getRole, delRole} from "../../api";
 
+import Add from "./add";
+import Save from "./save";
 import RoleAuth from "./roleAuth";
 import moment from "moment";
 
@@ -35,7 +37,7 @@ export default class list extends Component {
                 key: 'name',
                 render: (role) => (
                     <LinkButton
-                        onClick={() => this.saveRole(role.id)}>{role.name}
+                        onClick={() => this.showRoleAuth(role.id)}>{role.name}
                     </LinkButton>
                 )
             },
@@ -65,8 +67,12 @@ export default class list extends Component {
                 render: (role) => {
                     return (
                         <span>
-                            <LinkButton onClick={() => this.showRoleAuth(role.id)}>查看权限</LinkButton>
-                            <LinkButton onClick={() => this.delRole(role.id)}>删除</LinkButton>
+                            <LinkButton onClick={() => this.props.history.push('/role/save', {role})}>编辑</LinkButton>
+                             <Popconfirm title="确定要删除么" okText="是" cancelText="否"
+                                         onConfirm={() => this.delRole(role.id)}>
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                 <a href="#">删除</a>
+                            </Popconfirm>
                         </span>
                     )
                 }
@@ -76,47 +82,17 @@ export default class list extends Component {
 
     //角色权限
     showRoleAuth = (id) => {
-        // this.props.history.push('/role/details', {id})
-
         this.roleId = id;
-        this.setState({showStatus:1})
-
-        // getRole(id).then(res => {
-        //     if (res.code === 200) {
-        //         const role = res.data;
-        //         this.props.history.push('/role/details', {role})
-        //     } else {
-        //         message.error("获取数据失败！");
-        //     }
-        // })
+        this.setState({showStatus:3})
     };
 
     /**
      * 取消弹出框
      */
     handleCancel = () => {
+
         //隐藏确认框
         this.setState({showStatus: 0});
-    };
-
-    addRole = () => {
-        this.props.history.push('/role/add')
-    };
-
-    //保存角色
-    saveRole = (id) => {
-        if (id !== 0) {
-            getRole(id).then(res => {
-                if (res.code === 200) {
-                    const role = res.data;
-                    this.props.history.push('/role/save', {role})
-                } else {
-                    message.error("获取数据失败！");
-                }
-            })
-        } else {
-            this.props.history.push('/role/save', {})
-        }
     };
 
     //删除角色
@@ -162,7 +138,7 @@ export default class list extends Component {
         const total = this.state.total;
         const title = (
             <span>
-                <Button type='primary' onClick={() => this.addRole()}>
+                <Button type='primary' onClick={() => this.props.history.push('/role/add')}>
                     <Icon type='plus'/>
                     添加角色
                 </Button>
@@ -188,7 +164,7 @@ export default class list extends Component {
                 <Modal
                     title="查看权限"
                     maskClosable={true}
-                    visible={this.state.showStatus === 1}
+                    visible={this.state.showStatus === 3}
                     onOk={this.handleCancel}
                     onCancel={this.handleCancel}
                 >

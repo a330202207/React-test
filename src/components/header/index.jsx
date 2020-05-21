@@ -43,12 +43,12 @@ class Header extends Component {
         const path = this.props.location.pathname;
         let title;
         menuList.forEach(item => {
-            if (item.key === path) {
+            if (item.menu_router === path) {
                 title = item.title;
             } else if (item.children) {
 
                 // 所有子item中查找匹配
-                const cItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
+                const cItem = item.children.find(cItem => path.indexOf(cItem.menu_router) === 0);
 
                 //如果有值才匹配
                 if (cItem) {

@@ -131,6 +131,9 @@ export const getMenuList = (parent_id, page, page_size) => ajax(BASE + '/admin/g
     page_size
 });
 
+//获取树形菜单
+export const getTreeMenu = () => ajax(BASE + 'admin/get/treeMenus', {});
+
 //添加菜单
 export const addMenu = ({parent_id, name, order_by, menu_router}) => ajax(BASE + '/admin/add/menu', {
     parent_id,

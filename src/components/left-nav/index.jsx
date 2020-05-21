@@ -28,8 +28,8 @@ class LeftNav extends Component {
         return menuList.map(item => {
             if (!item.children) {
                 return (
-                    <Menu.Item key={item.key}>
-                        <Link to={item.key}>
+                    <Menu.Item key={item.menu_router}>
+                        <Link to={item.menu_router}>
                             <Icon type={item.icon}/>
                             <span>{item.title}</span>
                         </Link>
@@ -37,14 +37,14 @@ class LeftNav extends Component {
                 )
             } else {
                 //查找当前请求路径匹配的子菜单
-                const cItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
+                const cItem = item.children.find(cItem => path.indexOf(cItem.menu_router) === 0);
                 //打开当前子菜单
                 if (cItem) {
-                    this.openKey = item.key;
+                    this.openKey = item.menu_router;
                 }
                 return (
                     <SubMenu
-                        key={item.key}
+                        key={item.menu_router}
                         title={
                             <span>
                             <Icon type={item.icon}/>
