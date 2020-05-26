@@ -114,15 +114,17 @@ export const getRoleList = (page, page_size) => ajax(BASE + '/admin/get/roleList
 //获取全部角色
 export const getAllRole = () => ajax(BASE + '/admin/get/all/role');
 
+//添加角色
+export const addRole = ({name, menu_ids}) => ajax(BASE + '/admin/add/role', {name, menu_ids}, 'POST');
+
 //保存角色
-export const saveRole = (page, page_size) => ajax(BASE + '/admin/save/role', {page, page_size});
+export const saveRole = ({id, name, menu_ids}) => ajax(BASE + '/admin/save/role', {id, name, menu_ids}, 'POST');
 
 //删除角色
 export const delRole = (id) => ajax(BASE + '/admin/del/role', {id}, 'POST');
 
 //获取角色
-export const getRole = (id) => ajax(BASE + '/admin/get/role', {id});
-
+export const getRoleMenus = (id) => ajax(BASE + '/admin/get/role/menus', {id});
 
 //获取菜单列表
 export const getMenuList = (parent_id, page, page_size) => ajax(BASE + '/admin/get/menuList', {

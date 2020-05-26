@@ -123,12 +123,8 @@ class ProductSave extends PureComponent {
                 const imgs = this.img.current.getImgs();
                 const details = this.editor.current.getDetail();
                 const product = {name, order_by, price, imgs, status, details, category_id, num};
+
                 let res;
-                // console.log(product);
-                // console.log(this.state.delImg);
-                // console.log(this.state.isUpdate);
-
-
                 if (this.state.isUpdate) {
                     product.id = this.state.product.id;
 

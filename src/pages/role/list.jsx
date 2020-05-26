@@ -2,10 +2,8 @@ import React, {Component} from "react";
 import {Button, Card, Icon, message, Modal, Popconfirm, Table} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
 import LinkButton from "../../components/link-button";
-import {getRoleList, getRole, delRole} from "../../api";
+import {getRoleList, getRoleMenus, delRole} from "../../api";
 
-import Add from "./add";
-import Save from "./save";
 import RoleAuth from "./roleAuth";
 import moment from "moment";
 
@@ -67,7 +65,8 @@ export default class list extends Component {
                 render: (role) => {
                     return (
                         <span>
-                            <LinkButton onClick={() => this.props.history.push('/role/save', {role})}>编辑</LinkButton>
+                            {/*<LinkButton onClick={() => this.props.history.push('/role/save', {role})}>编辑</LinkButton>*/}
+                            <LinkButton onClick={() => this.editRole(role)}>编辑</LinkButton>
                              <Popconfirm title="确定要删除么" okText="是" cancelText="否"
                                          onConfirm={() => this.delRole(role.id)}>
                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -80,22 +79,50 @@ export default class list extends Component {
         ];
     };
 
-    //角色权限
-    showRoleAuth = (id) => {
-        this.roleId = id;
-        this.setState({showStatus:3})
+    /**
+     * 角色权限
+     * @param id
+     */
+    showRoleAuth = async (id) => {
+        const res = await getRoleMenus(id);
+        if (res.code === 200) {
+            this.roleMenus = res.data.map(c => (String(c.menu_id)));
+            this.setState({showStatus: 3})
+        } else {
+            message.error('获取角色失败!');
+        }
+
     };
 
     /**
      * 取消弹出框
      */
     handleCancel = () => {
-
         //隐藏确认框
         this.setState({showStatus: 0});
     };
 
-    //删除角色
+    /**
+     * 编辑角色
+     * @param role
+     * @returns {Promise<void>}
+     */
+    editRole = async (role) => {
+        const res = await getRoleMenus(role.id);
+        if (res.code === 200) {
+            const {id,name} = role;
+            const roleList = res.data.map(c => (String(c.menu_id)));
+            this.props.history.push('/role/save', {id, name, roleList})
+        } else {
+            message.error('获取角色失败!');
+        }
+    };
+
+    /**
+     * 删除角色
+     * @param id
+     * @returns {Promise<void>}
+     */
     delRole = async (id) => {
         const res = await delRole(id);
         if (res.code === 200) {
@@ -106,7 +133,11 @@ export default class list extends Component {
         }
     };
 
-    //获取角色列表
+    /**
+     * 获取角色列表
+     * @param page
+     * @returns {Promise<void>}
+     */
     getRoleList = async (page = 1) => {
         this.page = page;
 
@@ -169,7 +200,7 @@ export default class list extends Component {
                     onCancel={this.handleCancel}
                 >
                     <RoleAuth
-                        id={this.roleId}
+                        roleMenus={this.roleMenus}
                     />
                 </Modal>
             </Card>

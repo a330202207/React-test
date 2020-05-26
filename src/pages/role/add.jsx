@@ -1,30 +1,44 @@
 import React, {Component} from "react";
-import {Card, Form, Icon, Input, Button, message, Tree, List} from 'antd'
+import {Card, Form, Icon, Input, Button, message, Tree} from 'antd'
 import LinkButton from "../../components/link-button";
-import {getTreeMenu, addMenu} from "../../api";
+import {addRole} from "../../api";
 import menuList from '../../config/menuConfig'
 
-
 const {TreeNode} = Tree;
-
 const Item = Form.Item;
 
-
 /**
- * 保存角色
+ * 添加角色
  */
-class addRole extends Component {
+class roleAdd extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checkedKeys: [],
-            defaultKeys: []
+            checkedKeys: []
         };
     };
 
     onCheck = (checkedKeys) => {
         this.setState({
-            defaultKeys: checkedKeys
+            checkedKeys: checkedKeys
+        });
+    };
+
+    //提交
+    handleSubmit = () => {
+        this.props.form.validateFields(async (err, values) => {
+            if (!err) {
+                const {name} = values;
+                const menu_ids = this.state.checkedKeys;
+                const role = {name, menu_ids};
+                const res = await addRole(role);
+                if (res.code === 200) {
+                    message.success('操作成功!');
+                    this.props.history.goBack()
+                } else {
+                    message.error('操作失败!');
+                }
+            }
         });
     };
 
@@ -84,10 +98,10 @@ class addRole extends Component {
                         name="menu_ids"
                     >
                         <Tree
+                            // multiple={true}
                             checkable
                             defaultExpandAll={true}
                             onCheck={this.onCheck}
-                            checkedKeys={this.state.defaultKeys}
                         >
                             {this.renderTreeNodes(menuList)}
                         </Tree>
@@ -101,4 +115,4 @@ class addRole extends Component {
     }
 }
 
-export default Form.create()(addRole);
+export default Form.create()(roleAdd);
