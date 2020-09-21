@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Card, Form, Icon, Input, InputNumber, message, Switch} from "antd";
-import LinkButton from "../../components/link-button";
-import {addProduct, delImg, saveProduct} from "../../api";
+import LinkButton                                              from "../../components/linkButton";
+import {addProduct, delImg, saveProduct}                       from "../../api";
 
 const Item = Form.Item;
 

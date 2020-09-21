@@ -7,7 +7,7 @@ import MenuSave from "./save";
 /**
  * 菜单路由
  */
-export default class Menu extends Component {
+export default class Index extends Component {
     render() {
         return (
             <Switch>

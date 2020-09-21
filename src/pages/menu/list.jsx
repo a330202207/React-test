@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Card, Icon, message, Table, Modal, Popconfirm} from "antd";
-import {PAGE_SIZE} from "../../utils/constants";
-import LinkButton from "../../components/link-button";
+import {PAGE_SIZE}                               from "../../config/constants";
+import LinkButton                                from "../../components/linkButton";
 import {getMenuList, addMenu, delMenu, saveMenu} from "../../api";
 import Add from "./add";
 import Save from "./save";

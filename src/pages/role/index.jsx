@@ -9,7 +9,7 @@ import RoleAdd from "./add";
 /**
  * 角色路由
  */
-export default class Role extends Component {
+export default class Index extends Component {
     render() {
         return (
             <Switch>

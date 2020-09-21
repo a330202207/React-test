@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Card, Form, Icon, Input, Select, message, Switch, Button} from "antd";
-import LinkButton from "../../components/link-button";
-import {getAllRole, addAdmin} from "../../api";
+import LinkButton                                                 from "../../components/linkButton";
+import {getAllRole, addAdmin}                                     from "../../api";
 
 const Item = Form.Item;
 const {Option} = Select;

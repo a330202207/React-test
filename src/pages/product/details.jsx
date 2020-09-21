@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Card, Icon, List, Switch} from 'antd'
 
-import LinkButton from '../../components/link-button';
+import LinkButton from '../../components/linkButton';
 
 const Item = List.Item;
 

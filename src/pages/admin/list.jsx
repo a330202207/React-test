@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Card, Icon, message, Table} from "antd";
-import {PAGE_SIZE} from "../../utils/constants";
-import LinkButton from "../../components/link-button";
+import {PAGE_SIZE}    from "../../config/constants";
+import LinkButton     from "../../components/linkButton";
 import {getAdminList} from "../../api";
 import moment from "moment";
 

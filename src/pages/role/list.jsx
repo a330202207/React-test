@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Card, Icon, message, Modal, Popconfirm, Table} from "antd";
-import {PAGE_SIZE} from "../../utils/constants";
-import LinkButton from "../../components/link-button";
+import {PAGE_SIZE}                          from "../../config/constants";
+import LinkButton                           from "../../components/linkButton";
 import {getRoleList, getRoleMenus, delRole} from "../../api";
 
 import RoleAuth from "./roleAuth";

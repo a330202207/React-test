@@ -1,8 +1,89 @@
-.home {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  font-size: 30px;
+.app-container {
+  background-color: rgb(240, 242, 245);
+  position: relative;
+
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
+  }
+}
+
+.panel-group-container {
+  .panel-group {
+    .card-panel-col {
+      margin-bottom: 20px;
+    }
+
+    .card-panel {
+      height: 115px;
+      font-size: 16px;
+      position: relative;
+      overflow: hidden;
+      color: #666;
+      background: #fff;
+      box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+      border-color: rgba(0, 0, 0, .05);
+
+      .card-panel-icon-wrapper {
+        float: left;
+        margin: 14px 0 0 14px;
+        padding: 16px;
+        transition: all 0.38s ease-out;
+        border-radius: 6px;
+      }
+
+      .card-panel-icon {
+        float: left;
+        font-size: 48px;
+      }
+
+      .card-panel-description {
+        height: 80px;
+        float: right;
+        font-weight: bold;
+        margin: 26px;
+        margin-left: 0px;
+        display: flex;
+        align-items: center;
+
+        .card-panel-text {
+          line-height: 18px;
+          color: rgba(0, 0, 0, 0.45);
+          //font-size: 16px;
+          margin-bottom: 12px;
+          margin-right: 10px;
+        }
+
+        .card-panel-num {
+          font-size: 20px;
+          //margin-right: 30px;
+          padding-bottom: 12px;
+          //margin-left: 10px;
+        }
+        .moneyNum{
+          margin-right: 20px;
+        }
+        .ant-statistic{
+          display: flex;
+          align-items: center;
+          padding-bottom: 8px;
+        }
+        .ant-statistic-title{
+          font-size: 16px;
+        }
+        .ant-statistic-content{
+          padding-bottom: 6px;
+          margin-left: 10px;
+        }
+        .singleSpn{
+          padding-bottom: 12px;
+          margin-right: 20px;
+        }
+        .moneySymbol{
+          padding-bottom: 12px;
+        }
+      }
+    }
+  }
 }

@@ -7,7 +7,7 @@ import AdminSave from "./save";
 /**
  * 菜单路由
  */
-export default class Admin extends Component {
+export default class Index extends Component {
     render() {
         return (
             <Switch>
@@ -15,7 +15,6 @@ export default class Admin extends Component {
                 <Route path='/admin/save' component={AdminSave}/>
                 <Redirect to='/admin/list'/>
             </Switch>
-
         )
     }
 }

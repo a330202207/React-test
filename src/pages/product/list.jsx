@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Card, Select, Input, Button, Icon, Table, message, DatePicker} from "antd";
-import LinkButton from "../../components/link-button";
+import LinkButton                                                      from "../../components/linkButton";
 
 import {getProductList, updateProductStatus, delProduct} from "../../api";
-import {PAGE_SIZE} from '../../utils/constants'
+import {PAGE_SIZE} from '../../config/constants'
 import moment from 'moment';
 
 const Option = Select.Option;
@@ -210,6 +210,7 @@ export default class ProductList extends Component {
                     dataSource={this.state.productList}
                     columns={this.state.columns}
                     pagination={{
+                        current: this.page,
                         total,
                         defaultPageSize: PAGE_SIZE,
                         showQuickJumper: true,

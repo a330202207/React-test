@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Input, Card, Icon, Form, Switch} from 'antd'
-import LinkButton from '../../components/link-button';
+import LinkButton                        from '../../components/linkButton';
 
 const Item = Form.Item;
 

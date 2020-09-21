@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Card, Form, Icon, Input, Button, message, Tree} from 'antd'
-import LinkButton from "../../components/link-button";
-import {addRole} from "../../api";
+import LinkButton                                       from "../../components/linkButton";
+import {addRole}                                        from "../../api";
 import menuList from '../../config/menuConfig'
 
 const {TreeNode} = Tree;

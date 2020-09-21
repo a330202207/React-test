@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import {Card, Form, Icon, Input, InputNumber, Cascader, Switch, Button, message} from 'antd'
-import PicturesWall from './picturesWall'
-import LinkButton from '../../components/link-button';
+import PicturesWall                                     from './picturesWall'
+import LinkButton                                       from '../../components/linkButton';
 import {getCategories, addProduct, saveProduct, delImg} from "../../api";
 import RichTextEditor from './rich-text-editor'
 

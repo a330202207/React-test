@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, message, Table, Modal, Popconfirm} from 'antd';
-import LinkButton from "../../components/link-button";
+import {Button, Card, Icon, message, Table, Modal, Popconfirm}   from 'antd';
+import LinkButton                                                from "../../components/linkButton";
 import {getCategoryList, addCategory, saveCategory, delCategory} from "../../api";
-import {PAGE_SIZE} from '../../utils/constants'
+import {PAGE_SIZE} from '../../config/constants'
 import Add from "./add";
 import Save from "./save";
 
