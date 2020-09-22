@@ -1,44 +1,35 @@
 import ajax from "./ajax";
-
-
-//登陆
-export const login = (user_name, password) => ajax('/admin/login', {user_name, password}, 'POST');
-
-//添加用户
-export const addUser = (user) => ajax('/manage/user/add', user, 'POST');
-
-//获取天气
+import {request} from "../utils/request";
 
 //获取分类列表
-export const getCategoryList = (parent_id, page, page_size) => ajax('/admin/get/categoryList', {
-    parent_id,
-    page,
-    page_size
-});
+export function getCategoryList(data) {
+    console.log(data)
+    return request("/admin/get/categoryList", data, "GET");
+}
+
 
 //获取多个分类
-export const getCategories = (parent_id) => ajax('/admin/get/categories', {parent_id});
+export function getCategories(data) {
+    return request("/admin/get/categories", data, "GET");
+}
 
 //获取分类
 export const getCategory = (id) => ajax('/admin/get/category', {id});
 
 //添加分类
-export const addCategory = ({name, parent_id, order_by}) => ajax('/admin/add/category', {
-    name,
-    parent_id,
-    order_by,
-}, 'POST');
+export function addCategory(data) {
+    return request("/admin/add/category", data, "POST");
+}
 
 //删除分类
-export const delCategory = (id) => ajax('/admin/del/category', {id}, 'POST');
+export function delCategory(data) {
+    return request("/admin/del/category", data, "POST");
+}
 
 //更新分类
-export const saveCategory = ({id, name, parent_id, order_by}) => ajax('/admin/save/category/', {
-    id,
-    name,
-    parent_id,
-    order_by
-}, 'POST');
+export function saveCategory(data) {
+    return request("/admin/save/category/", data, "POST");
+}
 
 //获取商品列表
 export const getProductList = (page, page_size, name, status, startTime, endTime) => ajax('/admin/get/productList', {

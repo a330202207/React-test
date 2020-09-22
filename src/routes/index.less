@@ -1,0 +1,26 @@
+.ant-breadcrumb{
+  padding-top: 10px;
+  padding-left: 20px;
+}
+//滚动条 左侧菜单栏
+.ant-layout-sider{
+  height: 100%;
+  overflow-y: scroll;
+}
+//隐藏滚动条的样式 左侧菜单栏
+.ant-layout-sider::-webkit-scrollbar {
+  /*width: 0px;*/
+  /*background: none;*/
+  display: none;
+}
+/*兼容火狐*/
+.ant-layout-sider {
+  scrollbar-width: none;
+}
+/* 兼容IE10+ */
+.ant-layout-sider {
+  -ms-overflow-style: none;
+}
+body{
+  line-height: 0;
+}
