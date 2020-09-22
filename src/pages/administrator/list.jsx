@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Button, Card, Icon, message, Table} from "antd";
-import {PAGE_SIZE}    from "../../config/constants";
-import LinkButton     from "../../components/linkButton";
-import {getAdminList} from "../../api";
+import {Button, Card, Icon, message, Table, Popconfirm} from "antd";
+import {PAGE_SIZE}                        from "../../config/constants";
+import LinkButton                         from "../../components/linkButton";
+import {getAdminList, getAdmin, delAdmin} from "../../api";
 import moment from "moment";
 
 /**
@@ -12,6 +12,7 @@ export default class list extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            page: 0,
             total: 0,
             adminList: [],
             loading: false,                 //是否正在获取数据
@@ -48,7 +49,7 @@ export default class list extends Component {
                 key: 'login_date',
                 render: (login_date) => (
                     <span>
-                        {login_date !== 0 ? moment(login_date * 1000).format("YYYY-MM-DD HH:mm:ss") : ''}
+                        {login_date !== 0 ? moment(login_date).format("YYYY-MM-DD HH:mm:ss") : ''}
                     </span>
                 )
             },
@@ -93,17 +94,15 @@ export default class list extends Component {
             {
                 title: '操作',
                 width: 300,
-                render: (product) => {
-                    const status = product.status === 1 ? "启用" : "禁用";
-                    const newStatus = product.status === 1 ? 2 : 1;
+                render: (admin) => {
                     return (
                         <span>
-                            <LinkButton onClick={() => this.delProduct(product.id)}>删除</LinkButton>
-                            <LinkButton
-                                onClick={() => this.props.history.push('/product/save', {product})}>编辑</LinkButton>
-                            <LinkButton onClick={() => {
-                                this.updateStatus(product.id, newStatus)
-                            }}>{status}</LinkButton>
+                            {/*<LinkButton onClick={() => this.props.history.push('/user/save', {admin})}>编辑</LinkButton>*/}
+                            <LinkButton onClick={() => this.saveAdminInfo(admin.id)}>编辑</LinkButton>
+                             <Popconfirm title="确定要删除么" okText="是" cancelText="否" onConfirm={() => this.delAdmin(admin.id)}>
+                                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                 <a href="#" >删除</a>
+                            </Popconfirm>
                         </span>
                     )
                 }
@@ -113,7 +112,7 @@ export default class list extends Component {
 
     //获取用户列表
     getAdminList = async (page = 1) => {
-        this.page = page;
+        this.state.page = page;
 
         //loading
         this.setState({loading: true});
@@ -132,6 +131,30 @@ export default class list extends Component {
         }
     };
 
+    //获取用户信息
+    saveAdminInfo = (id) => {
+        getAdmin(id).then(res => {
+            if (res.code === 200) {
+                const admin = res.data;
+                console.log(admin)
+                this.props.history.push('/user/save', {admin});
+            } else {
+                message.error("获取管理员信息失败！")
+            }
+        })
+    };
+
+    //删除管理员
+    delAdmin = async (id) => {
+        const res = await delAdmin(id);
+        if (res.code === 200) {
+            message.success('操作成功!');
+            this.getAdminList(this.page);
+        } else {
+            message.error('操作失败!');
+        }
+    };
+
     /**
      * 执行异步
      */
@@ -145,7 +168,7 @@ export default class list extends Component {
         const total = this.state.total;
         const title = (
             <span>
-                <Button type='primary' onClick={() => this.props.history.push('/admin/add', {})}>
+                <Button type='primary' onClick={() => this.props.history.push('/user/add')}>
                     <Icon type='plus'/>
                     添加管理员
                 </Button>

@@ -1,10 +1,10 @@
-import React, {Component} from "react";
+import React, {Component}                                              from "react";
 import {Card, Select, Input, Button, Icon, Table, message, DatePicker} from "antd";
 import LinkButton                                                      from "../../components/linkButton";
 
 import {getProductList, updateProductStatus, delProduct} from "../../api";
-import {PAGE_SIZE} from '../../config/constants'
-import moment from 'moment';
+import {PAGE_SIZE}                                       from "../../config/constants";
+import moment                                            from "moment";
 
 const Option = Select.Option;
 const {RangePicker} = DatePicker;
@@ -13,63 +13,63 @@ export default class ProductList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            page: 0,
             total: 0,
-            productName: '',
+            productName: "",
             statusType: "0",
             startTime: 0,
             endTime: 0,
             productList: [],
             loading: false,                 //是否正在获取数据
             columns: this.initColumns(),
-        }
+        };
     };
 
     /**
      * 初始化Table所有列数组
-     * @returns {[{dataIndex: string, title: string, key: string}, {width: number, title: string, render: (function(*=): *)}]}
      */
     initColumns = () => {
         return [
             {
-                title: '商品ID',
-                dataIndex: 'id',
-                key: 'id',
+                title: "商品ID",
+                dataIndex: "id",
+                key: "id",
             },
             {
-                title: '商品名称',
-                key: 'name',
+                title: "商品名称",
+                key: "name",
                 render: (product) => (
                     <LinkButton
-                        onClick={() => this.props.history.push('/product/details', {product})}>{product.name}
+                        onClick={() => this.props.history.push("/product/details", {product})}>{product.name}
                     </LinkButton>
                 )
             },
             {
-                title: '商品价格',
-                dataIndex: 'price',
-                key: 'price',
-                render: (price) => '¥' + price  // 当前指定了对应的属性, 传入的是对应的属性值
+                title: "商品价格",
+                dataIndex: "price",
+                key: "price",
+                render: (price) => "¥" + price  // 当前指定了对应的属性, 传入的是对应的属性值
             },
             {
-                title: '商品状态',
-                dataIndex: 'status',
-                key: 'status',
+                title: "商品状态",
+                dataIndex: "status",
+                key: "status",
                 render: (status) => (
-                    <span>{status === 1 ? '在售' : '已下架'}</span>
+                    <span>{status === 1 ? "在售" : "已下架"}</span>
                 )
             },
             {
-                title: '创建时间',
-                dataIndex: 'created_at',
-                key: 'created_at',
+                title: "创建时间",
+                dataIndex: "created_at",
+                key: "created_at",
                 render: (created_at) => (
                     <span>
-                        {created_at !== 0 ? moment(created_at * 1000).format("YYYY-MM-DD HH:mm:ss") : ''}
+                        {created_at !== 0 ? moment(created_at * 1000).format("YYYY-MM-DD HH:mm:ss") : ""}
                     </span>
                 )
             },
             {
-                title: '操作',
+                title: "操作",
                 width: 300,
                 render: (product) => {
                     const status = product.status === 1 ? "下架" : "上架";
@@ -78,12 +78,12 @@ export default class ProductList extends Component {
                         <span>
                             <LinkButton onClick={() => this.delProduct(product.id)}>删除</LinkButton>
                             <LinkButton
-                                onClick={() => this.props.history.push('/product/save', {product})}>编辑</LinkButton>
+                                onClick={() => this.props.history.push("/product/save", {product})}>编辑</LinkButton>
                             <LinkButton onClick={() => {
-                                this.updateProductStatus(product.id, newStatus)
+                                this.updateProductStatus(product.id, newStatus).then();
                             }}>{status}</LinkButton>
                         </span>
-                    )
+                    );
                 }
             },
         ];
@@ -95,7 +95,7 @@ export default class ProductList extends Component {
      * @returns {Promise<void>}
      */
     getProductList = async (page = 1) => {
-        this.page = page;
+        this.state.page = page;
         const {productName, statusType, startTime, endTime} = this.state;
 
         this.setState({loading: true}); // 显示loading
@@ -107,7 +107,7 @@ export default class ProductList extends Component {
             this.setState({
                 total,
                 productList: list
-            })
+            });
         } else {
             message.error("获取商品列表失败");
         }
@@ -117,10 +117,10 @@ export default class ProductList extends Component {
     updateProductStatus = async (id, status) => {
         const res = await updateProductStatus({id, status});
         if (res.code === 200) {
-            message.success('操作成功!');
-            this.getProductList(this.page);
+            message.success("操作成功!");
+            this.getProductList();
         } else {
-            message.error('操作失败!');
+            message.error("操作失败!");
         }
     };
 
@@ -128,18 +128,17 @@ export default class ProductList extends Component {
     delProduct = async (id) => {
         const res = await delProduct(id);
         if (res.code === 200) {
-            message.success('操作成功!');
-            this.getProductList(this.page);
+            message.success("操作成功!");
+            this.getProductList();
         } else {
-            message.error('操作失败!');
+            message.error("操作失败!");
         }
     };
 
     //时间选择
     changeTime = (value, dateString) => {
-        // const {startTime, endTime} = dateString;
-        const startTime = moment(dateString[0], 'YYYY-MM-DD HH:mm:ss').unix();
-        const endTime = moment(dateString[1], 'YYYY-MM-DD HH:mm:ss').unix();
+        const startTime = moment(dateString[0], "YYYY-MM-DD HH:mm:ss").unix();
+        const endTime = moment(dateString[1], "YYYY-MM-DD HH:mm:ss").unix();
 
         this.setState({
             startTime,
@@ -152,9 +151,7 @@ export default class ProductList extends Component {
      * 执行异步
      */
     componentDidMount() {
-        this.getProductList(1).then(r => function () {
-            console.log("异步获取失败")
-        });
+        this.getProductList().then();
     }
 
     render() {
@@ -166,12 +163,12 @@ export default class ProductList extends Component {
                     placeholder='请输入名称'
                     value={this.state.productName}
                     onChange={event => this.setState({productName: event.target.value})}
-                    style={{width: 150, margin: '0 10px'}}
+                    style={{width: 150, margin: "0 10px"}}
                 />
                 状态
                 <Select
                     defaultValue={this.state.statusType}
-                    style={{width: 150, margin: '0 15px'}}
+                    style={{width: 150, margin: "0 15px"}}
                     onChange={value => this.setState({statusType: value})}
                 >
                     <Option value='0'>全部</Option>
@@ -180,22 +177,26 @@ export default class ProductList extends Component {
                 </Select>
                 添加日期
                 <RangePicker
-                    style={{margin: '0 5px'}}
+                    style={{margin: "0 5px"}}
                     showTime={{
-                        format: 'HH:mm',
+                        format: "HH:mm",
                         hideDisabledOptions: true
                     }}
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.changeTime}
                 />
-                <Button type='primary' onClick={() => {
-                    this.getProductList(1)
-                }}>搜索</Button>
+                <Button
+                    type='primary'
+                    onClick={() => {
+                        this.getProductList().then();
+                    }}>
+                    搜索
+                </Button>
             </span>
         );
 
         const extra = (
-            <Button type='primary' onClick={() => this.props.history.push('/product/save', {})}>
+            <Button type='primary' onClick={() => this.props.history.push("/product/save", {})}>
                 <Icon type='plus'/>
                 添加商品
             </Button>
@@ -218,6 +219,6 @@ export default class ProductList extends Component {
                     }}
                 />
             </Card>
-        )
+        );
     }
 }

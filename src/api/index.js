@@ -13,9 +13,6 @@ export function getCategories(data) {
     return request("/admin/get/categories", data, "GET");
 }
 
-//获取分类
-export const getCategory = (id) => ajax('/admin/get/category', {id});
-
 //添加分类
 export function addCategory(data) {
     return request("/admin/add/category", data, "POST");

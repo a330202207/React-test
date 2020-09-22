@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {message, Radio}   from "antd";
+import {Radio}            from "antd";
 import ReactEcharts       from "echarts-for-react";
 
 class BarChart extends Component {
