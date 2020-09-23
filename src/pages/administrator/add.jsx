@@ -26,7 +26,6 @@ class addUser extends Component {
                 const {user_name, role_id, password, phone} = values;
                 const status = this.state.status;
                 const adminInfo = {user_name, password, phone, role_id, status};
-                console.log(adminInfo);
                 const res = await addAdmin(adminInfo);
                 if (res.code === 200) {
                     message.success('操作成功!');
@@ -51,7 +50,7 @@ class addUser extends Component {
     };
 
     componentDidMount() {
-        this.getAllRole();
+        this.getAllRole().then();
     };
 
     onStatusChange = (status) => {

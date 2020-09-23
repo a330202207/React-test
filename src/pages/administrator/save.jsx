@@ -52,7 +52,7 @@ class saveUser extends Component {
     };
 
     componentDidMount() {
-        this.getAllRole();
+        this.getAllRole().then();
     };
 
     onStatusChange = (status) => {
@@ -73,7 +73,6 @@ class saveUser extends Component {
 
     render() {
         const {getFieldDecorator} = this.props.form;
-        console.log(this.state.admin)
         const title = (
             <span>
                 <LinkButton>

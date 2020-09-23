@@ -60,7 +60,7 @@ const menuList = [
         children: [
             {
                 title: '管理员列表',
-                key: '/admin/list',
+                key: '/administrator/list',
                 icon: 'bars',
             }
         ]
